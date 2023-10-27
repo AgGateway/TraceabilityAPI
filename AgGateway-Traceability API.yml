@@ -91,31 +91,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/queryTraceableResourceUnit"
-    patch:
-      summary: ""
-      description: ""
-      security:
-      - OAuth2:
-        - "traceableResourceUnitWrite"
-      tags:
-      - "TRU"
-      operationId: "asPlanted_updateTraceableResourceUnit"
-      parameters:
-      - name: "id"
-        in: "query"
-        description: ""
-        required: false
-        schema:
-          type: "string"
-      requestBody:
-        description: ""
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/updateTraceableResourceUnit"
-      responses:
-        "200":
-          description: ""
   /as-planted/V1/traceable-resource-unit-list:
     summary: ""
     description: ""
@@ -245,10 +220,12 @@ paths:
       responses:
         "200":
           description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/queryTraceableResourceUnit"
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateTraceableResourceUnit"
   /as-planted/V1/container:
     summary: ""
     description: ""
@@ -274,6 +251,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/queryContainer"
+  /as-planted/V1/geospatial-list:
+    summary: ""
+    description: ""
+    get:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "geospatialRead"
+      tags:
+      - "Fields"
+      operationId: "asPlanted_queryGeospatialList"
+      parameters:
+      - name: "sinceLastDateTime"
+        in: "query"
+        description: ""
+        required: false
+        schema:
+          type: "string"
+          format: "date-time"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/queryGeospatialList"
   /as-planted/V1/container/{id}/container-state:
     summary: ""
     description: ""
@@ -328,6 +332,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/queryCriticalTrackingEvent"
+  /as-planted/V1/geospatial/{id}:
+    summary: ""
+    description: ""
+    get:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "geospatialRead"
+      tags:
+      - "Fields"
+      operationId: "asPlanted_queryGeospatial"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/queryGeospatial"
   /as-planted/V1/critical-tracking-event-list:
     summary: ""
     description: ""
@@ -374,6 +404,8 @@ components:
               \ read"
             criticalTrackingEventWrite: "Allows Critical Tracking Event data to be\
               \ written"
+            geospatialRead: "Allows Geospatial data to be read"
+            geospatialWrite: "Allows Geospatial data to be written"
   schemas:
     queryContainer:
       x-oagis-bie-guid: "c6a6897de0524e798273a96a22cb5e04"
@@ -1795,6 +1827,78 @@ components:
             type: "object"
             additionalProperties: false
             properties: {}
+    queryGeospatial:
+      x-oagis-bie-guid: "2a41a867d44a40a28a42241b40df46d3"
+      x-oagis-bie-date-time: "2023-10-18T18:40:03+0000"
+      x-oagis-bie-version: "V1"
+      type: "object"
+      additionalProperties: false
+      properties:
+        typeCode:
+          example: "Polygon"
+          type: "string"
+          format: "token"
+        uuid:
+          example: "e3a8aec7-f2a2-4cb3-a5c7-02358c588002"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          example: "OEM Platform"
+          type: "string"
+          format: "normalizedString"
+        partyId:
+          example: "OEM Party Id"
+          type: "string"
+          format: "normalizedString"
+        description:
+          example: "Back 40"
+          type: "string"
+        formatCode:
+          example: "GeoJSON"
+          type: "string"
+          format: "token"
+        uri:
+          example: "https://api.oemplatform.com/field/e3a8aec7-f2a2-4cb3-a5c7-02358c588002"
+          type: "string"
+          format: "normalizedString"
+    queryGeospatialList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/queryGeospatialListEntry"
+    queryGeospatialListEntry:
+      x-oagis-bie-guid: "2a41a867d44a40a28a42241b40df46d3"
+      x-oagis-bie-date-time: "2023-10-18T18:40:03+0000"
+      x-oagis-bie-version: "V1"
+      type: "object"
+      additionalProperties: false
+      properties:
+        typeCode:
+          example: "Polygon"
+          type: "string"
+          format: "token"
+        uuid:
+          example: "e3a8aec7-f2a2-4cb3-a5c7-02358c588002"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          example: "OEM Platform"
+          type: "string"
+          format: "normalizedString"
+        partyId:
+          example: "OEM Party Id"
+          type: "string"
+          format: "normalizedString"
+        description:
+          example: "Back 40"
+          type: "string"
+        formatCode:
+          example: "GeoJSON"
+          type: "string"
+          format: "token"
+        uri:
+          example: "https://api.oemplatform.com/field/e3a8aec7-f2a2-4cb3-a5c7-02358c588002"
+          type: "string"
+          format: "normalizedString"
     updateContainer:
       x-oagis-bie-guid: "2ec2281e7923496b830d10a1317bdd26"
       x-oagis-bie-date-time: "2023-10-19T20:55:10+0000"
