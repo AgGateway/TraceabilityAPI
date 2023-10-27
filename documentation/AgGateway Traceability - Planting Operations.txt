@@ -16,10 +16,12 @@ DataPlatform -->MobileApp:geospatial-list
 Farmer->MobileApp: select this field
 MobileApp ->DataPlatform: GET /geospatial/{id}
 DataPlatform -->MobileApp: geospatial
+
 == shipped products ==
 Farmer ->MobileApp: scan QR on delivery document
 MobileApp ->DataPlatform: GET /shipped-item-instance-list?shipmentId
 DataPlatform -->MobileApp: shipped-item-instance-list
+
 == as-filled ==
 Farmer->MobileApp: Start Fill Operation
 MobileApp ->Tractor Display: Start Fill Operation
@@ -29,6 +31,7 @@ Tractor Display --> MobileApp: container-list
 MobileApp ->DataPlatform: POST /critical-tracking-event
 DataPlatform -->MobileApp: cteId
 note right of DataPlatform: CTE start date time
+
 loop for-each container (planter Box, fertilizer)
 Farmer ->MobileApp: identify container
 Farmer ->MobileApp: record start volume pct
@@ -38,6 +41,7 @@ MobileApp ->Tractor Display: select product from list
 MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit
 DataPlatform -->MobileApp: truId
 end
+
 MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}
 note right of DataPlatform: CTE transfer to planter status=complete with end date time
 note right of DataPlatform: CTE includes one TRU per container with item instance (qty/lot)
