@@ -25,9 +25,8 @@ DataPlatform -->MobileApp: shipped-item-instance-list
 == as-filled ==
 Farmer->MobileApp: Start Fill Operation
 MobileApp ->Tractor Display: Start Fill Operation
-Tractor Display -> CAN: attached device
-CAN ->planter: attached device
-Tractor Display --> MobileApp: container-list
+MobileApp ->DataPlatform: GET /container-list
+DataPlatform --> MobileApp: container-list
 MobileApp ->DataPlatform: POST /critical-tracking-event
 DataPlatform -->MobileApp: cteId
 note right of DataPlatform: CTE start date time
@@ -47,3 +46,4 @@ note right of DataPlatform: CTE transfer to planter status=complete with end dat
 note right of DataPlatform: CTE includes one TRU per container with item instance (qty/lot)
 
 == as-planted ==
+
