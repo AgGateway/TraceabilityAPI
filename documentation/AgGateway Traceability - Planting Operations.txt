@@ -1,0 +1,16 @@
+title AgGateway Traceability - Planting Operations
+
+actor Farmer
+participant MobileApp
+control Tractor Display
+control CAN
+control planter
+control planter Box
+database DataPlatform
+
+== as-filled ==
+Farmer->MobileApp: Start Fill Operation
+MobileApp ->Tractor Display: Start Fill Operation
+
+== as-planted ==
+
