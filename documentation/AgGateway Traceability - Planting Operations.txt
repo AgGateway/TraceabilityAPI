@@ -6,11 +6,34 @@ control Tractor Display
 control CAN
 control planter
 control planter Box
+participant arable field
 database DataPlatform
 
+== field selection ==
+Farmer->MobileApp: retrieve my fields
+MobileApp ->DataPlatform: GET /geospatial-list
+DataPlatform -->MobileApp:geospatial-list
+Farmer->MobileApp: select this field
+MobileApp ->DataPlatform: GET /geospatial/{id}
+DataPlatform -->MobileApp: geospatial
 == as-filled ==
 Farmer->MobileApp: Start Fill Operation
 MobileApp ->Tractor Display: Start Fill Operation
+Tractor Display -> CAN: attached device
+CAN ->planter: attached device
+Tractor Display --> MobileApp: container-list
+MobileApp ->DataPlatform: POST /critical-tracking-event
+DataPlatform -->MobileApp: cteId
+note right of DataPlatform: CTE start date time
+loop for-each container (planter Box, fertilizer)
+Farmer ->MobileApp: identify container
+Farmer ->MobileApp: record start volume pct
+Farmer ->planter Box: fill container
+Farmer ->MobileApp: select product from list
+MobileApp ->Tractor Display: select product from list
+MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit
+DataPlatform -->MobileApp: truId
+end
 
 == as-planted ==
 
