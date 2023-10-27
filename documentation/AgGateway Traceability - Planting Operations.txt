@@ -16,6 +16,10 @@ DataPlatform -->MobileApp:geospatial-list
 Farmer->MobileApp: select this field
 MobileApp ->DataPlatform: GET /geospatial/{id}
 DataPlatform -->MobileApp: geospatial
+== shipped products ==
+Farmer ->MobileApp: scan QR on delivery document
+MobileApp ->DataPlatform: GET /shipped-item-instance-list?shipmentId
+DataPlatform -->MobileApp: shipped-item-instance-list
 == as-filled ==
 Farmer->MobileApp: Start Fill Operation
 MobileApp ->Tractor Display: Start Fill Operation
@@ -35,6 +39,7 @@ MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resou
 DataPlatform -->MobileApp: truId
 end
 MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}
-note right of DataPlatform: CTE transfer to planter complete, with end date time
+note right of DataPlatform: CTE transfer to planter status=complete with end date time
+note right of DataPlatform: CTE includes one TRU per container with item instance (qty/lot)
 
 == as-planted ==
