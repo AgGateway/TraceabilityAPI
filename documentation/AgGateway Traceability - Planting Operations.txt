@@ -34,6 +34,7 @@ MobileApp ->Tractor Display: select product from list
 MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit
 DataPlatform -->MobileApp: truId
 end
+MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}
+note right of DataPlatform: CTE transfer to planter complete, with end date time
 
 == as-planted ==
-
