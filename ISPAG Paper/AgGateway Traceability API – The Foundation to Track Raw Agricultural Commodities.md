@@ -13,29 +13,83 @@ There is increasing demand for food traceability, ranging from consumers wanting
 
 
 # CART introduction of the Transfer Event
-# Reference to ontology work with Pascal
-# Reference to CAST work that has raw ag commodities as out of scope
-# Details of TRU and additional CTE types
+- The effort was formed ten (10) years ago as a collaboration between the Precision Ag Council and the Grain and Feed Council.
+- Detailed business processes in BPMN.
+- Concept of containers as an abstract object where a field could also be a container.
+- Transfer between containers.
+- Details listing of key data elements across business process areas
+- Bluetooth experiments
+# Origin of TRU and additional CTE types
 - Reference where TRU and CTE came from
-- TRU University of Toronto
-- “Fish/salmon paper” on TRU management
-# Origin of the Critical Tracking Event
-- came from institute of food technologists
+- Summarize TRU University of Toronto
+- Summarize “Fish/salmon paper” on TRU management
+# Origin of the Critical Tracking Event and Key Data Elements
+- came from Institute of Food Technologists
+- Focus on Tracking in the Supply Chain external vs internal tracking (manufacturing, food processing)
+- Key Data Elements
 # Commingling of Commodities
 - seed flow, grain flow modeling- reason this was lobbied to be out of scope
 - informs equipment design considerations to capture better data with new equipment designs; e.g. planter mini-bulk boxes, storage bins, combine hoppers, tender systems - opportunity for innovation
 - Lack of implementation of process control systems at grain elevators (dump pit to bin, bin to bin, dump pit to dryer, etc.)
 - New combines may have the capability to shut off floor auger then clean out unload auger when the unload auger is “shut off”
-# Opportunities for innovation would
+# Reference to ontology work with Pascal Hitzler and Cogan KSU
+- Ontology work presented a AgGateway, research work funded by NIST.  
+- Quantity of Stuff
+- Not only TransferEvent, but added Observation Event, Maintenance Event, Identification Event.  
+# AgGateway Advancements 
+- Transfer between source and target TRUs, where containers are part of it.  
+- Leveraging of the Item Instance which is the quantity of Stuff.
+- Data Link, add table to show these linkages; premise, if you know what you planted, you will know what you are harvesting
+- Dataset Metadata-
+  -- links between raw, processes and summarized datasets
+  -- FAIR principles
+  -- Dublin Core specialization,
+- Links between datasets and business transactions
+  -- Scale Ticket
+  -- ASN from farmer is ideal, but few if any farmers have ERPs that can do that (open source ERPs would be great)
+  -- Mix Ticket
+- Could be represented in terms of a graph view
+# Reference and Response to CAST work 
+- GS1 centric, Institute of Food Technologists, Cornell.  
+- Raw Ag Commodities as out of scope.
+- We claim this is possible with a degree of accuracy
+- The level of accuracy is study for future work, to define a confidence level in statistical terms, based on models and mathematical equations.
+  
+# Need help - Opportunities for innovation would
 - enable capturing better, more accurate data without putting extra work on the farmer to document everything
 - In-Field Product Identifiation; QR code on delivery document, upload into tractor display; scenario
 -- Seed as-filled, as-planted
 -- Crop Protection as-mixed, as-applied
--- Crop Nutrition 
-# Concrete V1 Open API 
-- using a tool to generate based on reflections of the model
-- enables code generation for faster implementation
-- Open source tool
+-- Crop Nutrition as-mixed, as-applied
+- Container design; shouldering effects, remaining product between transfers
+# A real Open API that can be used  
+- V1 for as-planted
+- Leverage an open source tool called connectCenter (formerly SCORE)
+- model properies, relationships, definitions, examples
+- visually create 'BIEs' pick and choose properties needed from existing components, most often identifiers, names, descriptions, quantities, classifiers, etc. based on the business context where it will be used in this case as-planted
+- generates/expresses YAML document to open in Swagger Editor
+- assembles multiple BIEs into endpoints for CRUD behavior based on anticipated uses; v3.2
+- enables code generation for faster implementation in FMIS, ERP, process control systems, OEM platforms
+- modern technology
 # Standards-based Library from OAGi
 - question on how to license API work?
 - Reused components
+- Other standards are manual maintenance slow to react
+- Agile standard process, turnaround for changes within the month with regular release cycles
+- connectCenter is used to manage the lifecycle of the standard itself, not just the implementation guidelines
+# Future
+- More business context
+- Reuse of many capabilities
+- Reuse of components for improved generated code quality
+- Improvements to connectCenter; endpoint detail 3.3 with query and path parameters, HTTP headers, and example composition
+- Retailer engagement
+- OEM engagement (manufacturing, and platform APIs)
+- Manufacturer
+- Response to Climate Smart Commodities and Organic asks
+- ABABE paper for Planting, similar to Harvesting providing ISOXML mapping recommendations
+# Summary
+- Ten years of work, research on these challenges
+- Need engagement
+- Refinement will happen as we are focusing on Grain now
+- Other business contexts/ scenarios
+- 
