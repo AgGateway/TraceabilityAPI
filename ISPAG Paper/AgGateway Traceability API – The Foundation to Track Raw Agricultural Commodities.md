@@ -1,11 +1,11 @@
 # AgGateway Traceability API – The Foundation to Track Raw Agricultural Commodities
 
 ## Authors:
-Nieman, Scott; Digital Ag Architect – Land O’Lakes
-Wallace, Evan; Research Scientist – NIST
-Tevis, Joe; Agriculture Consultant – Vis Consulting
-Craker, Ben; Digital Portfolio Manager – AgGateway
-Oh, Hakju; connectCenter Software Architect - NIST
+- Nieman, Scott; Digital Ag Architect – Land O’Lakes
+- Wallace, Evan; Research Scientist – NIST
+- Tevis, Joe; Agriculture Consultant – Vis Consulting
+- Craker, Ben; Digital Portfolio Manager – AgGateway
+- Oh, Hakju; connectCenter Software Architect - NIST
 
 ## Abstract
 
