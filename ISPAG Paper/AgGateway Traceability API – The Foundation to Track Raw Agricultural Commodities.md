@@ -19,14 +19,16 @@ There is increasing demand for food traceability, ranging from consumers wanting
 - Transfer between containers.
 - Details listing of key data elements across business process areas
 - Bluetooth experiments
-# Origin of TRU and additional CTE types
+# Origin of the Critical Tracking Event (CTE) and Key Data Elements (KDEs)
+- Institute of Food Technologists
+- Focus on Tracking in the Supply Chain
+  -- external e(shipping, receiving) and
+  -- internal tracking (manufacturing, food processing,batch, packaging)
+- Key Data Elements
+# Origin of Traceable Resource Unit (TRU) 
 - Reference where TRU and CTE came from
 - Summarize TRU University of Toronto
 - Summarize “Fish/salmon paper” on TRU management
-# Origin of the Critical Tracking Event and Key Data Elements
-- came from Institute of Food Technologists
-- Focus on Tracking in the Supply Chain external vs internal tracking (manufacturing, food processing)
-- Key Data Elements
 # Commingling of Commodities
 - seed flow, grain flow modeling- reason this was lobbied to be out of scope
 - informs equipment design considerations to capture better data with new equipment designs; e.g. planter mini-bulk boxes, storage bins, combine hoppers, tender systems - opportunity for innovation
