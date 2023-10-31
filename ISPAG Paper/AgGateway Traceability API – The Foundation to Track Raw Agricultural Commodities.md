@@ -22,8 +22,8 @@ There is increasing demand for food traceability, ranging from consumers wanting
 # Origin of the Critical Tracking Event (CTE) and Key Data Elements (KDEs)
 - Institute of Food Technologists
 - Focus on Tracking in the Supply Chain
-  -- external e(shipping, receiving) and
-  -- internal tracking (manufacturing, food processing,batch, packaging)
+-- external e(shipping, receiving) and
+-- internal tracking (manufacturing, food processing,batch, packaging)
 - Key Data Elements
 # Origin of Traceable Resource Unit (TRU) 
 - Reference where TRU and CTE came from
@@ -31,7 +31,7 @@ There is increasing demand for food traceability, ranging from consumers wanting
 - Summarize “Fish/salmon paper” on TRU management
 # Commingling of Commodities
 - seed flow, grain flow modeling- reason this was lobbied to be out of scope
-- informs equipment design considerations to capture better data with new equipment designs; e.g. planter mini-bulk boxes, storage bins, combine hoppers, tender systems - opportunity for innovation
+- informs equipment design considerations to capture better data with new equipment designs; e.g. planter mini-bulk boxes, storage bins, combine hoppers, tender systems
 - Lack of implementation of process control systems at grain elevators (dump pit to bin, bin to bin, dump pit to dryer, etc.)
 - New combines may have the capability to shut off floor auger then clean out unload auger when the unload auger is “shut off”
 # Reference to ontology work with Pascal Hitzler and Cogan KSU
@@ -43,13 +43,13 @@ There is increasing demand for food traceability, ranging from consumers wanting
 - Leveraging of the Item Instance which is the quantity of Stuff.
 - Data Link, add table to show these linkages; premise, if you know what you planted, you will know what you are harvesting
 - Dataset Metadata-
-  -- links between raw, processes and summarized datasets
-  -- FAIR principles
-  -- Dublin Core specialization,
+-- links between raw, processes and summarized datasets
+-- FAIR principles
+-- Dublin Core specialization,
 - Links between datasets and business transactions
-  -- Scale Ticket
-  -- ASN from farmer is ideal, but few if any farmers have ERPs that can do that (open source ERPs would be great)
-  -- Mix Ticket
+-- Scale Ticket
+-- ASN from farmer is ideal, but few if any farmers have ERPs that can do that (open source ERPs would be great)
+-- Mix Ticket
 - Could be represented in terms of a graph view
 # Reference and Response to CAST work 
 - GS1 centric, Institute of Food Technologists, Cornell.  
