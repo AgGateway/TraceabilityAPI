@@ -55,13 +55,7 @@ There is increasing demand for food traceability, ranging from consumers wanting
 - We claim this is possible with a degree of accuracy
 - The level of accuracy is study for future work, to define a confidence level in statistical terms, based on models and mathematical equations.
   
-# Need help - Opportunities for innovation would
-- enable capturing better, more accurate data without putting extra work on the farmer to document everything
-- In-Field Product Identifiation; QR code on delivery document, upload into tractor display; scenario
--- Seed as-filled, as-planted
--- Crop Protection as-mixed, as-applied
--- Crop Nutrition as-mixed, as-applied
-- Container design; shouldering effects, remaining product between transfers
+
 # A real Open API that can be used  
 - V1 for as-planted
 - Leverage an open source tool called connectCenter (formerly SCORE)
@@ -77,16 +71,28 @@ There is increasing demand for food traceability, ranging from consumers wanting
 - Other standards are manual maintenance slow to react
 - Agile standard process, turnaround for changes within the month with regular release cycles
 - connectCenter is used to manage the lifecycle of the standard itself, not just the implementation guidelines
-# Future
-- More business context
-- Reuse of many capabilities
+# Future AgGateway and Affiliate Work Efforts
+- More business contexts, refined BIE profiles
+- Anticipate reuse as many capabilities for planting (transfers between TRUs)
+- Transport to Grain Elevator
+- Models internal to Elevator (collaboration with Universities)
 - Reuse of components for improved generated code quality
-- Improvements to connectCenter; endpoint detail 3.3 with query and path parameters, HTTP headers, and example composition
+- Improvements to NIST connectCenter;
+  -- endpoint detail 3.3 with query and path parameters, HTTP headers, and
+  -- example composition
 - Retailer engagement
-- OEM engagement (manufacturing, and platform APIs)
-- Manufacturer
+- OEM engagement (manufactured implements, monitors and platform APIs)
+- Manufacturer engagement
 - Response to Climate Smart Commodities and Organic asks
 - ABABE paper for Planting, similar to Harvesting providing ISOXML mapping recommendations
+# Need help - Opportunities for innovation would
+- enable capturing better, more accurate data without putting extra work on the farmer to document everything
+- In-Field Product Identifiation; QR code on delivery document, upload into tractor display; scenario
+-- Seed as-filled, as-planted
+-- Crop Protection as-mixed, as-applied
+-- Crop Nutrition as-mixed, as-applied
+- Container design; shouldering effects, remaining product between transfers
+- Retrofit monitors for older equipment, smaller producers
 # Summary
 - Ten years of work, research on these challenges
 - Need engagement
