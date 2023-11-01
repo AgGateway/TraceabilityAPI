@@ -18,7 +18,7 @@ There is increasing demand for food traceability, ranging from consumers wanting
 - Concept of containers as an abstract object where a field could also be a container.
 - Transfer between containers.
 - Details listing of key data elements across business process areas
-- Bluetooth experiments
+- Bluetooth experiments; AndriodThings, Proximity API, attempt to determine 'beacon of interest' when multiple beacons were attached to containers; beacons could carry reprogramable metadata about the container (asset UUIDs, broadcast name, local id, capacities)
 # Origin of the Critical Tracking Event (CTE) and Key Data Elements (KDEs)
 - Institute of Food Technologists
 - Focus on Tracking in the Supply Chain
@@ -50,14 +50,13 @@ There is increasing demand for food traceability, ranging from consumers wanting
 -- Scale Ticket
 -- ASN from farmer is ideal, but few if any farmers have ERPs that can do that (open source ERPs would be great)
 -- Mix Ticket
+- CAN messages trigger CTE level, stop /start of the auger
 - Could be represented in terms of a graph view
 # Reference and Response to CAST work 
 - GS1 centric, Institute of Food Technologists, Cornell.  
 - Raw Ag Commodities as out of scope.
 - We claim this is possible with a degree of accuracy
 - The level of accuracy is study for future work, to define a confidence level in statistical terms, based on models and mathematical equations.
-  
-
 # A real Open API that can be used  
 - V1 for as-planted
 - Leverage an open source tool called connectCenter (formerly SCORE)
@@ -73,6 +72,21 @@ There is increasing demand for food traceability, ranging from consumers wanting
 - Other standards are manual maintenance slow to react
 - Agile standard process, turnaround for changes within the month with regular release cycles
 - connectCenter is used to manage the lifecycle of the standard itself, not just the implementation guidelines
+# Capabilities of the Traceability API
+The following is based on the as-filled and as-planted business contexts, for planting operations.  Much of these capabilities can be repurposed for other field operations, but we believe those would have different endpoints.  
+Endpoint model best practice is 
+'<verb> /<domain>/<subdomain>/version/<resource>'.  
+We are leveraging connectCenter to provide 
+'<verb> /<business-context>/version/<BIE-name>'
+List of capabilities:
+- Fields, using Geospatial component, GET list, GET specific field
+- Container, list of OEM assets (a Field is rendered as Container), details of container, maintenance history (future)
+- Container State, what is the state of a container (empty, partially full, full), container history, capacities at each state code (start, end volume, weight)
+- Traceable Resource Unit;  active, complete status, linking of container to Item Instance - same item instance JSON shape as Shipped Item Instance, minus shipment detail
+- Key Data Elements; these are collected identifiers (keys) that enable search, and may be collected at the time of TRU creation
+- Current Maximum Capacity; despite specifications of a container, this provides short term capacities due to environment conditions or roadways suggesting not to fill a container up to the brim; avoid compactions, spillage of grain traveling up steep hills; GET latest, GET history
+- Critical Tracking Event; currently modeled to OEM Asset level often tied to CAN event messages to stop start implements; POST (create), GET list, GET detail, PUT to add KDEs, TRUs (to link a TRU to a CTE), and other properties
+- 
 # Future AgGateway and Affiliate Work Efforts
 - More business contexts, refined BIE profiles
 - Anticipate reuse as many capabilities for planting (transfers between TRUs)
@@ -94,7 +108,9 @@ There is increasing demand for food traceability, ranging from consumers wanting
 -- Crop Protection as-mixed, as-applied
 -- Crop Nutrition as-mixed, as-applied
 - Container design; shouldering effects, remaining product between transfers
-- Retrofit monitors for older equipment, smaller producers
+- Sensors and actuators;  to automate container state capacity detection (calculate remaining volume, or weight)
+- Retrofit monitors for older equipment, smaller producers, Wi-Fi with HTTP Servers for API endpoints, powerful enough to for edge compute (pre-processing of datasets (entire field); run ADAPT plug-ins
+- OEM equipment integration; AEF space, Grain Carts for load cells weight; if Current Max Capacity is reached, call API endpoint on Monitor to stop loadout auger
 # Summary
 - Ten years of work, research on these challenges
 - Need engagement
