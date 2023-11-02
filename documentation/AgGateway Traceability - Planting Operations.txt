@@ -26,24 +26,41 @@ DataPlatform -->MobileApp: shipped-item-instance-list
 Farmer->MobileApp: Start Fill Operation
 MobileApp ->Tractor Display: Start Fill Operation
 MobileApp ->DataPlatform: GET /container-list
+note right of DataPlatform: targetContainer list 
 DataPlatform --> MobileApp: container-list
 MobileApp ->DataPlatform: POST /critical-tracking-event
 DataPlatform -->MobileApp: cteId
 note right of DataPlatform: CTE start date time
 
-loop for-each container (planter Box, fertilizer)
-Farmer ->MobileApp: identify container
-Farmer ->MobileApp: record start volume pct
-Farmer ->planter Box: fill container
-Farmer ->MobileApp: select product from list
-MobileApp ->Tractor Display: select product from list
-MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit
-DataPlatform -->MobileApp: truId
-end
 
+loop for-each sourceContainer (Tender Bulk Box or Seed Bag)
+Farmer ->MobileApp: identify source container
+note right of MobileApp:RFID, Manifest QR
+Farmer ->MobileApp: select product from list
+note right of MobileApp: should match shipped Item Instance entry
+MobileApp ->Tractor Display: Wi-Fi: select product from list
+MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit?typeCode=Source
+DataPlatform -->MobileApp:sourceTRUId
+loop for-each targetContainer (planter Box, fertilizer)
+Farmer ->MobileApp: identify targetContainer
+Farmer ->MobileApp:record start weight or volume pct
+Farmer ->planter Box: fill targetContainer
+opt
+MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit?typeCode=Target
+DataPlatform -->MobileApp:targetTRUId
+MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit/{sourceTRUId}?endWeight=$
+DataPlatform -->MobileApp: sourceTRUId
+end
+opt CTE for each sourceTRU to targetTRU level transfer
+MobileApp ->DataPlatform: POST /critical-tracking-event
+note right of DataPlatform:both sourceTRU and targetTRU captured
+DataPlatform -->MobileApp: cteId
+end
+end
+end
 MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}
 note right of DataPlatform: CTE transfer to planter status=complete with end date time
-note right of DataPlatform: CTE includes one TRU per container with item instance (qty/lot)
+note right of DataPlatform:CTE includes one TRU per target container with item instance (qty/lot)\nsourceTRU has remaining item volume weight
 
 == as-planted ==
 
