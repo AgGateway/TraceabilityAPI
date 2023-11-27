@@ -25,6 +25,7 @@ DataPlatform -->MobileApp: shipped-item-instance-list
 == as-filled ==
 Farmer->MobileApp: Start Fill Operation
 MobileApp ->Tractor Display: Start Fill Operation
+note right of Tractor Display: future state with Wi-Fi/API-led displays
 MobileApp ->DataPlatform: GET /container-list
 note right of DataPlatform: targetContainer list 
 DataPlatform --> MobileApp: container-list
@@ -64,3 +65,17 @@ note right of DataPlatform:CTE includes one TRU per target container with item i
 
 == as-planted ==
 
+loop for-each sourceTRU with planterBox
+MobileApp ->MobileApp: copy targetTRU-> sourceTRU
+end
+
+Farmer ->Tractor Display: start planting
+Tractor Display -> CAN: CAN message
+CAN ->planter: I/O
+opt until-refill-required
+planter -> planter: start vacuum motor
+planter ->planter Box: drop seed
+planter Box ->arable field: drop seed
+planter Box ->arable field: cover seed
+
+end
