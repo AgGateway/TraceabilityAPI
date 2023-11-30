@@ -77,13 +77,13 @@ planter -> planter: start vacuum motor
 loop until-refill-required
 planter ->planter Box: drop seed
 planter Box ->arable field: drop seed
-planter Box ->arable field: cover seed
-planter ->planter: record point on arable field
+planter ->arable field: cover seed
+planter -> planter: record point on arable field
 planter ->Tractor Display: log point
 end
 
 
 Tractor Display --> MobileApp: geometry of subfield
 DataPlatform ->DataPlatform: define subfield geometry for each sourceTRU
+DataPlatform ->DataPlatform: geospatial intersection
 DataPlatform ->DataPlatform: consolidate as appropriate
-
