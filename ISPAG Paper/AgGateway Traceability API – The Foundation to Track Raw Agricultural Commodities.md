@@ -89,7 +89,7 @@ List of capabilities:
 - Current Maximum Capacity; despite specifications of a container, this provides short term capacities due to environment conditions or roadways suggesting not to fill a container up to the brim; avoid compactions, spillage of grain traveling up steep hills; GET latest, GET history
 - Critical Tracking Event; currently modeled to OEM Asset level often tied to CAN event messages to stop start implements; POST (create), GET list, GET detail, PUT to add KDEs, TRUs (to link a TRU to a CTE), and other properties
 
-# Level of granularity controlled by configuration of the planter
+# Level of granularity dependent on the planter configuration 
 - DDOP definitions
 - Configuration at the Dealer
 - Bin to Row Unit mapping
