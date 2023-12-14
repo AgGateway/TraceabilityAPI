@@ -88,6 +88,14 @@ List of capabilities:
 - Key Data Elements; these are collected identifiers (keys) that enable search, and may be collected at the time of TRU creation
 - Current Maximum Capacity; despite specifications of a container, this provides short term capacities due to environment conditions or roadways suggesting not to fill a container up to the brim; avoid compactions, spillage of grain traveling up steep hills; GET latest, GET history
 - Critical Tracking Event; currently modeled to OEM Asset level often tied to CAN event messages to stop start implements; POST (create), GET list, GET detail, PUT to add KDEs, TRUs (to link a TRU to a CTE), and other properties
+
+# Level of granularity controlled by configuration of the planter
+- DDOP definitions
+- Configuration at the Dealer
+- Bin to Row Unit mapping
+- Use of ISOXML to drive decisions
+- Option presented to farmer in display (planter or row level)
+- Each manufacturer may have limitations, and need this to be consistently implementation across the industry
 - 
 # Future AgGateway and Affiliate Work Efforts
 - More business contexts, refined BIE profiles
