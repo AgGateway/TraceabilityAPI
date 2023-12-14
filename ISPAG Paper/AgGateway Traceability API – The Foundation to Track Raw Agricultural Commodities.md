@@ -93,7 +93,7 @@ List of capabilities:
 - DDOP definitions
 - Configuration at the Dealer
 - Bin to Row Unit mapping
-- Use of ISOXML to drive decisions
+- Use of ISOXML to drive decisions; GET /container/{id}/ddop
 - Option presented to farmer in display (planter or row level)
 - Each manufacturer may have limitations, and need this to be consistently implementation across the industry
 - 
