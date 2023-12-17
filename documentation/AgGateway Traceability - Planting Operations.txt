@@ -21,17 +21,18 @@ DataPlatform -->MobileApp: geospatial
 Farmer ->MobileApp: scan QR on delivery document
 MobileApp ->DataPlatform: GET /shipped-item-instance-list?shipmentId
 DataPlatform -->MobileApp: shipped-item-instance-list
+MobileApp -> MobileApp: identify containers typeCode= bags | bulk box
 
-== as-filled ==
+== fill operation ==
 Farmer->MobileApp: Start Fill Operation
+MobileApp -> MobileApp: POST /operation type=Fill
 MobileApp ->Tractor Display: Start Fill Operation
 note right of Tractor Display: future state with Wi-Fi/API-led displays
-MobileApp ->DataPlatform: GET /container-list
-note right of DataPlatform: targetContainer list 
-DataPlatform --> MobileApp: container-list
-MobileApp ->DataPlatform: POST /critical-tracking-event
-DataPlatform -->MobileApp: cteId
-note right of DataPlatform: CTE start date time
+MobileApp -> MobileApp: GET /container-list
+MobileApp --> MobileApp: container-list
+MobileAPP -> MobileApp: POST /critical-tracking-event
+MobileApp -->MobileApp: cteId
+note right of MobileApp: CTE type, tru.truRole=Source, \n tru.timePeriod.startDateTime, operation.UUID
 
 
 loop for-each sourceContainer (Tender Bulk Box or Seed Bag)
@@ -40,8 +41,8 @@ note right of MobileApp:RFID, Manifest QR
 Farmer ->MobileApp: select product from list
 note right of MobileApp: should match shipped Item Instance entry
 MobileApp ->Tractor Display: Wi-Fi: select product from list
-MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit?typeCode=Source
-DataPlatform -->MobileApp:sourceTRUId
+MobileApp -> MobileApp: Create TRU typeCode=Source
+MobileApp -->MobileApp: truUUID
 loop for-each targetContainer (planter Box, fertilizer)
 Farmer ->MobileApp: identify targetContainer
 Farmer ->MobileApp:record start weight or volume pct
@@ -68,11 +69,12 @@ note right of DataPlatform:CTE includes one TRU per target container with item i
 loop for-each sourceTRU with planterBox
 MobileApp ->MobileApp: copy targetTRU-> sourceTRU
 end
-Farmer -> MobileApp: start planting
- MobileApp ->Tractor Display: start planting
+Farmer -> MobileApp: start planting opertion
+MobileApp -> MobileApp: Create Operation type=Plant
+MobileApp ->Tractor Display: start planting operation
  note right of Tractor Display: future state with Wi-Fi/API-led displays
 Tractor Display -> CAN: CAN message
-CAN ->planter: I/O
+CAN -> planter: I/O
 planter -> planter: start vacuum motor
 loop until-refill-required
 planter ->planter Box: drop seed
