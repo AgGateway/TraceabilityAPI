@@ -91,9 +91,9 @@ List of capabilities:
 
 # Level of granularity dependent on the planter configuration 
 - Granularity for fill operation is operation-sourceTRU combination; if sourceTRU is a bulk box, it may span multiple fill operations
-- DDOP definitions
+- DDOP definitions (bin to section)
 - Configuration at the Dealer
-- Bin to Row Unit mapping
+- Bin to Section to Row Unit mapping; section could be one row unit, 4 RUs, etc.  Section controls rate.
 - Use of ISOXML to drive decisions; GET /container/{id}/ddop
 - Option presented to farmer in display (planter or row level)
 - Each manufacturer may have limitations, and need this to be consistently implementation across the industry
