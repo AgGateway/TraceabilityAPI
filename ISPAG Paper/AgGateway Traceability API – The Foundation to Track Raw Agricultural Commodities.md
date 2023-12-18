@@ -97,6 +97,7 @@ List of capabilities:
 - Use of ISOXML to drive decisions; GET /container/{id}/ddop
 - Option presented to farmer in display (planter or row level)
 - Each manufacturer may have limitations, and need this to be consistently implementation across the industry
+- Granularity for plant operation is operation-targetTRU combination;  the part of the field that is planted will be a CTE; more CTEs possible if you are able to capture row unit - row in field granularity
 - 
 # Future AgGateway and Affiliate Work Efforts
 - More business contexts, refined BIE profiles
