@@ -12,21 +12,19 @@
 There is increasing demand for food traceability, ranging from consumers wanting to know where their food comes from (GMO, organic, climate-smart commodities), to manufacturers of agricultural inputs wanting to know the effectiveness of their products as used by farmers. Existing traceability requirements focus on the supply chain of goods packaged from their origin to retail grocery stores, with regulations provided by the Food Safety Modernization Act (FSMA) from the US Food and Drug Administration which suggests used of Critical Tracking Events and Key Data Elements to manage this challenge. Excluded from the list of foods, the Food Traceability List, for which additional information is required by FSMA are Raw Agricultural Commodities (RACs) such as grains and milk, which due to comingling, were viewed as a daunting effort to manage. AgGateway members studied this challenge since the FSMA's introduction, and introduced new types of Critical Tracking Events including the Transfer Event, when used with the Traceable Resource Unit, have become a foundation model to confidently manage RACs. This model is only limited by existing farm equipment design with regard to what can be accurately logged on a machine. However use of emerging AI-based grain and fluid flow models, and farm and field practice changes are supported by this model to improve the confidence in tracking RACs. Taking it a step further, the foundational model leveraged new and existing standards-based 'core components' assembled in a NIST developed software tool called 'connectCenter'. Utilizing connectCenter a general Traceability API was created as an OpenAPI specification describing endpoints to manage these resources, allowing software developers to generate code in the programming language of their choice and embed these capabilities into OEM platforms, farm management information systems, and retailer ERPs. This OpenAPI specification of the core concepts of the CTE, KDE, TRU and Containers are intended to simplify implementation, thus accelerating adoption making it easier for the farmer to meet the increasing traceability demands. 
 
 # Value Proposition
-- Grower - Farm - Field
-- Planted Crop 
-- Seed Lot identifier
-- Flexibility to the level of granularity
-- Fast implementation with defined OpenAPI
-- Code Generation
-- Ease of maintenance with connectCenter
+- Leverages In-Field Product Id: Grower - Farm - Field identification; Planted Crop identification; Seed Lot identification
+- Flexibility to the level of granularity as driven by the implement used by farmer
+- Fast delivery of software implementation using defined OpenAPI, leverages modern Code Generation techniques
+- Version 1 specific to seed planting operations and planter box (bin) fill operations
+- Ease of maintenance with connectCenter for additional process areas
 - 
 # CART introduction of the Transfer Event
 - The effort was formed ten (10) years ago as a collaboration between the Precision Ag Council and the Grain and Feed Council.
 - Detailed business processes in BPMN.
-- Concept of containers as an abstract object where a field could also be a container.
+- Introduced the concept of the 'container' as an abstract object, where a field could also be a container.
 - Transfer between containers.
 - Details listing of key data elements across business process areas
-- Bluetooth experiments; AndriodThings, Proximity API, attempt to determine 'beacon of interest' when multiple beacons were attached to containers; beacons could carry reprogramable metadata about the container (asset UUIDs, broadcast name, local id, capacities)
+- Bluetooth experiments; AndriodThings, Proximity API, attempt to determine 'beacon of interest' when multiple beacons in a vicinity (per bin, contain; beacons could carry reprogramable metadata about the container (asset UUIDs, broadcast name, local id, capacities)
 # Origin of the Critical Tracking Event (CTE) and Key Data Elements (KDEs)
 - Institute of Food Technologists
 - Focus on Tracking in the Supply Chain
