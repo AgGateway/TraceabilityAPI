@@ -90,6 +90,7 @@ List of capabilities:
 - Critical Tracking Event; currently modeled to OEM Asset level often tied to CAN event messages to stop start implements; POST (create), GET list, GET detail, PUT to add KDEs, TRUs (to link a TRU to a CTE), and other properties
 
 # Level of granularity dependent on the planter configuration 
+- Granularity for fill operation is operation-sourceTRU combination; if sourceTRU is a bulk box, it may span multiple fill operations
 - DDOP definitions
 - Configuration at the Dealer
 - Bin to Row Unit mapping
