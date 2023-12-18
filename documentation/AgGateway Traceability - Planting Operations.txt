@@ -2,6 +2,7 @@ title AgGateway Traceability - Planting Operations
 
 actor Farmer
 participant MobileApp
+participant MobileLocalAPI
 control Tractor Display
 control CAN
 control planter
@@ -23,16 +24,16 @@ MobileApp ->DataPlatform: GET /shipped-item-instance-list?shipmentId
 DataPlatform -->MobileApp: shipped-item-instance-list
 MobileApp -> MobileApp: identify containers typeCode= bags | bulk box
 
-== fill operation ==
+== fill operation, off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB  ==
 Farmer->MobileApp: Start Fill Operation
-MobileApp -> MobileApp: POST /operation type=Fill
+MobileApp -> MobileLocalAPI: POST /operation type=Fill
 MobileApp ->Tractor Display: Start Fill Operation
 note right of Tractor Display: future state with Wi-Fi/API-led displays
-MobileApp -> MobileApp: GET /container-list
-MobileApp --> MobileApp: container-list
-MobileAPP -> MobileApp: POST /critical-tracking-event
-MobileApp -->MobileApp: cteId
-note right of MobileApp: CTE type, tru.truRole=Source, \n tru.timePeriod.startDateTime, operation.UUID
+MobileApp -> MobileLocalAPI: GET /container-list
+MobileLocalAPI --> MobileApp: container-list
+MobileAPP -> MobileLocalAPI: POST /critical-tracking-event
+MobileLocalAPI -->MobileApp: cteUUID
+note right of MobileLocalAPI: CTE type, tru.truRole=Source, \n tru.timePeriod.startDateTime, operation.UUID
 
 
 loop for-each sourceContainer (Tender Bulk Box or Seed Bag)
@@ -41,33 +42,34 @@ note right of MobileApp:RFID, Manifest QR
 Farmer ->MobileApp: select product from list
 note right of MobileApp: should match shipped Item Instance entry
 MobileApp ->Tractor Display: Wi-Fi: select product from list
-MobileApp -> MobileApp: Create TRU typeCode=Source
-MobileApp -->MobileApp: truUUID
+MobileApp -> MobileLocalAPI: POST /traceable-resource-unit typeCode=Source
+MobileLocalAPI -->MobileApp: truUUID
 loop for-each targetContainer (planter Box, fertilizer)
 Farmer ->MobileApp: identify targetContainer
 Farmer ->MobileApp:record start weight or volume pct
 Farmer ->planter Box: fill targetContainer
 opt
-MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit?typeCode=Target
-DataPlatform -->MobileApp:targetTRUId
-MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}/traceable-resource-unit/{sourceTRUId}?endWeight=$
-DataPlatform -->MobileApp: sourceTRUId
+MobileApp ->MobileLocalAPI: POST /critical-tracking-event/{cteId}/traceable-resource-unit?roleCode=Target
+MobileLocalAPI -->MobileApp:truRoleUUID, truUUID
+MobileApp -> MobileLocalAPI: POST /critical-tracking-event/{cteId}/traceable-resource-unit/{sourceTRUId}?endWeight=$
+MobileLocalAPI -->MobileApp: sourceTRUId
 end
 opt CTE for each sourceTRU to targetTRU level transfer
-MobileApp ->DataPlatform: POST /critical-tracking-event
-note right of DataPlatform:both sourceTRU and targetTRU captured
-DataPlatform -->MobileApp: cteId
+MobileApp ->MobileLocalAPI: POST /critical-tracking-event
+note right of MobileLocalAPI:both sourceTRU and targetTRU captured
+MobileLocalAPI -->MobileApp: cteId
 end
 end
 end
-MobileApp ->DataPlatform: PATCH /critical-tracking-event/{cteId}
-note right of DataPlatform: CTE transfer to planter status=complete with end date time
-note right of DataPlatform:CTE includes one TRU per target container with item instance (qty/lot)\nsourceTRU has remaining item volume weight
+MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteId}
+note right of MobileLocalAPI: CTE transfer to planter status=complete with end date time
+note right of MobileLocalAPI:CTE includes one TRU per target container with item instance (qty/lot)\nsourceTRU has remaining item volume weight
 
 == as-planted ==
 
 loop for-each sourceTRU with planterBox
-MobileApp ->MobileApp: copy targetTRU-> sourceTRU
+MobileApp ->MobileLocalAPI: POST /traceable-resource-unit/{truUUID}?roleCode=source
+note right of MobileLocalAPI: creates new source roleCode fo
 end
 Farmer -> MobileApp: start planting opertion
 MobileApp -> MobileApp: Create Operation type=Plant
