@@ -28,22 +28,27 @@ loop until this field is complete
 == fill operation, off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB  ==
 Farmer->MobileApp: Start Fill Operation
 MobileApp -> MobileLocalAPI: POST /operation type=Fill
+MobileLocalAPI -->MobileApp: operationUUID
 MobileApp ->Tractor Display: Wi-Fi: Start Fill Operation
 note left of Tractor Display: future state with Wi-Fi/API-led displays
 MobileApp -> MobileLocalAPI: GET /container-list
 MobileLocalAPI --> MobileApp: container-list
-
+note left of MobileLocalAPI: source
+MobileApp -> MobileLocalAPI: GET /container-list
+MobileLocalAPI --> MobileApp: container-list
+note left of MobileLocalAPI: target
 
 
 loop for-each sourceContainer (Tender Bulk Box or Seed Bag)
 Farmer ->MobileApp: identify source container
+Farmer ->MobileApp:record start weight or volume pct
 note left of MobileApp:RFID, Manifest QR
 Farmer ->MobileApp: select product from list
 note left of MobileApp: should match shipped Item Instance entry
 MobileApp ->Tractor Display: Wi-Fi: select product from list
 
 MobileApp -> MobileLocalAPI: POST /critical-tracking-event
-note left of MobileLocalAPI: CTE type, tru.truRole=Source, \n tru.timePeriod.startDateTime, operation.UUID
+note left of MobileLocalAPI: CTE type, \ntru.truRole.code=Source, \ntru.timePeriod.startDateTime, \ntru.Status.code\noperation.UUID,
 
 
 MobileLocalAPI -->MobileApp: cteUUID, truUUID. truRoleUUID(Source)
@@ -52,7 +57,7 @@ Farmer ->MobileApp: identify targetContainer
 Farmer ->MobileApp:record start weight or volume pct
 Farmer ->planter Box: fill targetContainer
 
-MobileApp ->MobileLocalAPI: POST /traceable-resource-unit/{truUUID}/truRole
+MobileApp ->MobileLocalAPI: POST /traceable-resource-unit
 note left of MobileLocalAPI: roleCode=Target,timePeriod, 
 MobileLocalAPI -->MobileApp:truRoleUUID(Target)
 MobileApp -> MobileLocalAPI: PATCH /traceable-resource-unit/{truUUID(Source)}?endWeight=$
@@ -61,12 +66,13 @@ MobileLocalAPI -->MobileApp: truUUID(Source)
 
 end
 end
-MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteId}
+MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
 note left of MobileLocalAPI: CTE transfer to planter status=complete with end date time
 note left of MobileLocalAPI:CTE includes one TRU per target container with item instance (qty/lot)\nsourceTRU has remaining item volume weight
 
 ==operation planting; off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB ==
-MobileApp -> MobileLocalAPI: POST /operation type=Fill
+MobileApp -> MobileLocalAPI: POST /operation type=Plant
+MobileLocalAPI -->MobileApp: operationUUID
 MobileApp ->Tractor Display: Wi-Fi: Start Fill Operation
 loop for-each sourceTRU with planterBox
 MobileApp ->MobileLocalAPI: POST /traceable-resource-unit/{truUUID}?roleCode=source
@@ -87,9 +93,4 @@ planter -> planter: record point on arable field
 planter ->Tractor Display: log point
 end
 
-
 Tractor Display --> MobileApp: geometry of subfield
-DataPlatform ->DataPlatform: define subfield geometry for each sourceTRU
-DataPlatform ->DataPlatform: geospatial intersection
-DataPlatform ->DataPlatform: consolidate as appropriate
-end
