@@ -115,6 +115,7 @@ List of capabilities:
 - Retailer engagement
 - OEM engagement (manufactured implements, monitors and platform APIs)
 - Manufacturer engagement
+- In addition to the focus on control systems, need some focus on data quality and identification (locally scoped identifier challenge - need to be able to publish out the DDOT for an instance of a planter, specific configuration as ordered by the farmer).
 - Response to Climate Smart Commodities and Organic asks
 - ABABE paper for Planting, similar to Harvesting providing ISOXML mapping recommendations
 # Need help - Opportunities for innovation would
