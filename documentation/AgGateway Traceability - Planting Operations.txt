@@ -12,15 +12,15 @@ database DataPlatform
 
 == field selection; on-line ==
 Farmer->MobileApp: retrieve my fields
-MobileApp ->DataPlatform: GET /geospatial-list
+MobileApp ->DataPlatform: GET /as-planted/V1/field-list
 DataPlatform -->MobileApp:geospatial-list
 Farmer->MobileApp: select this field
-MobileApp ->DataPlatform: GET /geospatial/{id}
+MobileApp ->DataPlatform: GET /as-planted/V1/field/{id}
 DataPlatform -->MobileApp: geospatial
 
 == shipped products; on-line ==
 Farmer ->MobileApp: scan QR on delivery document
-MobileApp ->DataPlatform: GET /shipped-item-instance-list?shipmentId
+MobileApp ->DataPlatform: GET /shipped-item-instance-list?shipmentId&retailerId
 DataPlatform -->MobileApp: shipped-item-instance-list
 MobileApp -> MobileApp: identify containers typeCode= bags | bulk box
 
@@ -40,9 +40,10 @@ note left of MobileLocalAPI: target
 
 
 loop for-each sourceContainer (Tender Bulk Box or Seed Bag)
+note left of MobileApp:RFID, Manifest QR with serialized bulk boxes, and perhaps serialized bags
 Farmer ->MobileApp: identify source container
 Farmer ->MobileApp:record start weight or volume pct
-note left of MobileApp:RFID, Manifest QR
+
 Farmer ->MobileApp: select product from list
 note left of MobileApp: should match shipped Item Instance entry
 MobileApp ->Tractor Display: Wi-Fi: select product from list
@@ -94,3 +95,4 @@ planter ->Tractor Display: log point
 end
 
 Tractor Display --> MobileApp: geometry of subfield
+end
