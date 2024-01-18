@@ -2,6 +2,7 @@ title AgGateway Traceability - Planting Operations
 
 actor Farmer
 participant MobileApp
+
 participant MobileLocalAPI
 control Tractor Display
 control CAN
@@ -42,7 +43,7 @@ note left of MobileLocalAPI: target
 loop for-each sourceContainer (Tender Bulk Box or Seed Bag)
 note left of MobileApp:RFID, Manifest QR with serialized bulk boxes, and perhaps serialized bags
 Farmer ->MobileApp: identify source container
-Farmer ->MobileApp:record start weight or volume pct
+Farmer ->MobileApp:record start weight or volume pct, or decrement bag inventory
 
 Farmer ->MobileApp: select product from list
 note left of MobileApp: should match shipped Item Instance entry
