@@ -1,4 +1,4 @@
-Step 1 download text file locally
+Step 1 download [AgGateway Traceability - Planting Operations.txt]([url](https://github.com/AgGateway/TraceabilityAPI/blob/main/documentation/AgGateway%20Traceability%20-%20Planting%20Operations.txt)) file locally
 
 Step 2 Go to: https://sequencediagram.org/
 
