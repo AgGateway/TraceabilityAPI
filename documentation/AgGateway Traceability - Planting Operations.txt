@@ -95,5 +95,7 @@ planter -> planter: record point on arable field
 planter ->Tractor Display: log point
 end
 
-Tractor Display --> MobileApp: geometry of subfield
+Tractor Display --> MobileApp: geometry of subfield(point)
+MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
 end
+MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
