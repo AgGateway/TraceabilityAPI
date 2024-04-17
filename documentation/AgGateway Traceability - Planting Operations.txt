@@ -28,16 +28,18 @@ MobileApp -> MobileApp: identify containers typeCode= bags | bulk box
 loop until this field is complete
 == fill operation, off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB  ==
 Farmer->MobileApp: Start Fill Operation
-MobileApp -> MobileLocalAPI: POST /operation type=Fill
+MobileApp -> MobileLocalAPI: POST /operation typeCode=Fill, startDateTime=, operator
 MobileLocalAPI -->MobileApp: operationUUID
 MobileApp ->Tractor Display: Wi-Fi: Start Fill Operation
 note left of Tractor Display: future state with Wi-Fi/API-led displays
 MobileApp -> MobileLocalAPI: GET /container-list
+note left of MobileApp: source
 MobileLocalAPI --> MobileApp: container-list
-note left of MobileLocalAPI: source
+
 MobileApp -> MobileLocalAPI: GET /container-list
+note left of MobileApp: target
 MobileLocalAPI --> MobileApp: container-list
-note left of MobileLocalAPI: target
+
 
 
 loop for-each sourceContainer (Tender Bulk Box or Seed Bag)
@@ -69,8 +71,10 @@ MobileLocalAPI -->MobileApp: truUUID(Source)
 end
 end
 MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
+
 note left of MobileLocalAPI: CTE transfer to planter status=complete with end date time
 note left of MobileLocalAPI:CTE includes one TRU per target container with item instance (qty/lot)\nsourceTRU has remaining item volume weight
+MobileApp ->MobileLocalAPI: PATCH /operation/{operationUUID}/endDateTime&status.code=Complete
 
 ==operation planting; off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB ==
 MobileApp -> MobileLocalAPI: POST /operation type=Plant
