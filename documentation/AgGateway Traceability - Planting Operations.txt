@@ -11,6 +11,11 @@ control planter Box
 participant arable field
 database DataPlatform
 
+== log in ==
+Farmer->MobileApp: log in
+MobileApp -> MobileLocalAPI: POST /operatorParty
+MobileApp -> DataPlatform: authenticate
+
 == field selection; on-line ==
 Farmer->MobileApp: retrieve my fields
 MobileApp ->DataPlatform: GET /as-planted/V1/field-list
@@ -26,8 +31,12 @@ DataPlatform -->MobileApp: shipped-item-instance-list
 MobileApp -> MobileApp: identify containers typeCode= bags | bulk box
 
 loop until this field is complete
+== pick operation; warehouse to field; transport and transfer events; tendering is more of the normal for larger farms; smaller producers are using bags==
 == fill operation, off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB  ==
 Farmer->MobileApp: Start Fill Operation
+MobileApp -> MobileLocalAPI: GET /device-resources
+MobileLocalAPI --> MobileApp: ^device-resources
+Farmer -> MobileApp: select device configuration
 MobileApp -> MobileLocalAPI: POST /operation typeCode=Fill, startDateTime=, operator
 MobileLocalAPI -->MobileApp: operationUUID
 MobileApp ->Tractor Display: Wi-Fi: Start Fill Operation
