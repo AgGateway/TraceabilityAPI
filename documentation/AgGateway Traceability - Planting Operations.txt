@@ -30,24 +30,26 @@ MobileApp ->DataPlatform: GET /shipped-item-instance-list?shipmentId&retailerId
 DataPlatform -->MobileApp: shipped-item-instance-list
 MobileApp -> MobileApp: identify containers typeCode= bags | bulk box
 
+MobileApp -> MobileLocalAPI: POST /traceable-resource-unit-list 
+note left of MobileApp:source TRUs
+MobileLocalAPI --> MobileApp:^TRU_uuid, typeCode=source, containerId
+
 loop until this field is complete
 == pick operation; warehouse to field; transport and transfer events; tendering is more of the normal for larger farms; smaller producers are using bags==
 == fill operation, off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB  ==
 Farmer->MobileApp: Start Fill Operation
-MobileApp -> MobileLocalAPI: GET /device-resources
-MobileLocalAPI --> MobileApp: ^device-resources
+MobileApp -> DataPlatform: GET /device-resources
+DataPlatform --> MobileApp: ^device-resources
 Farmer -> MobileApp: select device configuration
+
 MobileApp -> MobileLocalAPI: POST /operation typeCode=Fill, startDateTime=, operator
 MobileLocalAPI -->MobileApp: operationUUID
 MobileApp ->Tractor Display: Wi-Fi: Start Fill Operation
 note left of Tractor Display: future state with Wi-Fi/API-led displays
-MobileApp -> MobileLocalAPI: GET /container-list
-note left of MobileApp: source
-MobileLocalAPI --> MobileApp: container-list
+MobileApp -> MobileLocalAPI:POST  /traceable-resource-unit-list
+note left of MobileApp:target TRUs
+MobileLocalAPI --> MobileApp:^TRU-uuid, typeCode=target, containerId
 
-MobileApp -> MobileLocalAPI: GET /container-list
-note left of MobileApp: target
-MobileLocalAPI --> MobileApp: container-list
 
 
 
@@ -62,17 +64,14 @@ MobileApp ->Tractor Display: Wi-Fi: select product from list
 
 MobileApp -> MobileLocalAPI: POST /critical-tracking-event
 note left of MobileLocalAPI: CTE type, \ntru.truRole.code=Source, \ntru.timePeriod.startDateTime, \ntru.Status.code\noperation.UUID,
-
-
 MobileLocalAPI -->MobileApp: cteUUID, truUUID. truRoleUUID(Source)
+
 loop for-each targetContainer (planter Box, fertilizer)
 Farmer ->MobileApp: identify targetContainer
 Farmer ->MobileApp:record start weight or volume pct
 Farmer ->planter Box: fill targetContainer
 
-MobileApp ->MobileLocalAPI: POST /traceable-resource-unit
-note left of MobileLocalAPI: roleCode=Target,timePeriod, 
-MobileLocalAPI -->MobileApp:truRoleUUID(Target)
+
 MobileApp -> MobileLocalAPI: PATCH /traceable-resource-unit/{truUUID(Source)}?endWeight=$
 MobileLocalAPI -->MobileApp: truUUID(Source)
 
@@ -89,6 +88,11 @@ MobileApp ->MobileLocalAPI: PATCH /operation/{operationUUID}/endDateTime&status.
 MobileApp -> MobileLocalAPI: POST /operation type=Plant
 MobileLocalAPI -->MobileApp: operationUUID
 MobileApp ->Tractor Display: Wi-Fi: Start Fill Operation
+
+MobileApp -> MobileLocalAPI: POST /critical-tracking-event
+note left of MobileLocalAPI: CTE type, \ntru.truRole.code=Source, \ntru.timePeriod.startDateTime, \ntru.Status.code\noperation.UUID,
+MobileLocalAPI -->MobileApp: cteUUID, truUUID. truRoleUUID(Source)
+
 loop for-each sourceTRU with planterBox
 MobileApp ->MobileLocalAPI: POST /traceable-resource-unit/{truUUID}?roleCode=source
 note left of MobileLocalAPI: creates new truRole
