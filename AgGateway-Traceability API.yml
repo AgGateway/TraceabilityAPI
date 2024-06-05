@@ -15,6 +15,32 @@ info:
   version: "V1"
   x-oagis-license: ""
 paths:
+  /traceability/V1/container/{id}:
+    summary: ""
+    description: ""
+    get:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "containerRead"
+      tags:
+      - "Containers"
+      operationId: "queryContainer"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/containerResponse"
   /traceability/V1/container-list:
     summary: ""
     description: ""
@@ -43,7 +69,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/containerList"
-  /traceability/V1/container/{id}/container-state:
+  /traceability/traceable-resource-unit/{id}/V1/container-state:
     summary: ""
     description: ""
     patch:
@@ -74,7 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/containerResponse"
+                $ref: "#/components/schemas/containerState"
   /traceability/V1/critical-tracking-event:
     summary: ""
     description: ""
@@ -204,7 +230,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/criticalTrackingEventResponse"
+                $ref: "#/components/schemas/criticalTrackingEventListEntry"
   /traceability/V1/field/{id}:
     summary: ""
     description: ""
@@ -215,8 +241,8 @@ paths:
       - OAuth2:
         - "geospatialRead"
       tags:
-      - "Field"
-      operationId: "queryGeospatial"
+      - "Fields"
+      operationId: "queryField"
       parameters:
       - name: "id"
         in: "path"
@@ -241,8 +267,8 @@ paths:
       - OAuth2:
         - "geospatialRead"
       tags:
-      - "Field"
-      operationId: "queryGeospatialList"
+      - "Fields"
+      operationId: "queryFieldList"
       parameters:
       - name: "sinceLastDateTime"
         in: "query"
@@ -337,6 +363,86 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/deviceResourceList"
+  /traceability/V1/traceable-resource-unit:
+    summary: ""
+    description: ""
+    post:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "traceableResourceUnitWrite"
+      tags:
+      - "Traceable Resource Unit"
+      operationId: "createTraceableResourceUnit"
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/traceableResourceUnitRequestCreate"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/traceableResourceUnitResponseCreate"
+  /traceability/V1/traceable-resource-unit/{id}:
+    summary: ""
+    description: ""
+    get:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "traceableResourceUnitRead"
+      tags:
+      - "Traceable Resource Unit"
+      operationId: "queryTraceableResourceUnit"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/traceableResourceUnitResponseRead"
+    patch:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "traceableResourceUnitWrite"
+      tags:
+      - "Traceable Resource Unit"
+      operationId: "updateTraceableResourceUnit"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/traceableResourceUnitRequestUpdate"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/traceableResourceUnitResponseUpdate"
 components:
   securitySchemes:
     OAuth2:
@@ -362,221 +468,11 @@ components:
             operatorPartyWrite: "Allows Operator Party data to be written"
             deviceResourceRead: "Allows Device Resource data to be read"
             deviceResourceWrite: "Allows Device Resource data to be written"
+            traceableResourceUnitRead: "Allows Traceable Resource Unit data to be\
+              \ read"
+            traceableResourceUnitWrite: "Allows Traceable Resource Unit data to be\
+              \ written"
   schemas:
-    container:
-      x-oagis-bie-guid: "9b0824c60fdd4e23ad90cf5252da9dda"
-      x-oagis-bie-date-time: "2023-11-05T13:17:58+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Container"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/862"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
-      type: "object"
-      additionalProperties: false
-      properties:
-        typeCode:
-          example: "Planter_Box"
-          type: "string"
-          format: "token"
-        id:
-          example: "1"
-          type: "string"
-          format: "normalizedString"
-        uuid:
-          example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
-          type: "string"
-          format: "normalizedString"
-        sourceId:
-          oneOf:
-          - nullable: true
-          - example: ""
-            type: "string"
-            format: "normalizedString"
-        partyId:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        relatedId:
-          type: "array"
-          items:
-            type: "object"
-            additionalProperties: false
-            properties:
-              id:
-                oneOf:
-                - nullable: true
-                - example: ""
-                  type: "string"
-                  format: "normalizedString"
-              uuid:
-                example: ""
-                type: "string"
-                format: "normalizedString"
-              sourceId:
-                oneOf:
-                - nullable: true
-                - example: ""
-                  type: "string"
-                  format: "normalizedString"
-              partyId:
-                example: ""
-                type: "string"
-                format: "normalizedString"
-        description:
-          example: "Kinze 940"
-          type: "string"
-        capacity:
-          type: "object"
-          additionalProperties: false
-          properties:
-            typeCode:
-              example: "Specified"
-              type: "string"
-              format: "token"
-            maximumVolumeMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "950"
-                unitCode:
-                  example: "BU"
-                  type: "string"
-                  format: "token"
-            maximumWeightMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "53200"
-                unitCode:
-                  example: "LBS"
-                  type: "string"
-                  format: "token"
-        containerState:
-          type: "array"
-          items:
-            type: "object"
-            additionalProperties: false
-            properties:
-              typeCode:
-                example: "Capacity"
-                type: "string"
-                format: "token"
-              status:
-                type: "object"
-                additionalProperties: false
-                properties:
-                  code:
-                    example: "EMPTY"
-                    type: "string"
-                    format: "normalizedString"
-                  reasonCode:
-                    example: ""
-                    type: "string"
-                    format: "normalizedString"
-                  reason:
-                    example: ""
-                    type: "string"
-                  effectiveTimePeriod:
-                    type: "object"
-                    additionalProperties: false
-                    properties:
-                      typeCode:
-                        example: "Epoch"
-                        type: "string"
-                        format: "token"
-                      startDateTime:
-                        example: ""
-                        type: "string"
-                      endDateTime:
-                        example: ""
-                        type: "string"
-                        format: "date-time"
-              currentMaximumCapacity:
-                type: "object"
-                additionalProperties: false
-                properties:
-                  partyId:
-                    example: "Jeremy"
-                    type: "string"
-                    format: "normalizedString"
-                  reasonCode:
-                    example: "COMPACTION"
-                    type: "string"
-                    format: "normalizedString"
-                  reason:
-                    example: "Jeremy said so - higher moisture content."
-                    type: "string"
-                  effectiveTimePeriod:
-                    type: "object"
-                    additionalProperties: false
-                    properties:
-                      startDateTime:
-                        example: "2023-07-23 11:34:01-05:00"
-                        type: "string"
-                        format: "date-time"
-                      endDateTime:
-                        example: ""
-                        type: "string"
-                        format: "date-time"
-                  statusIndicator:
-                    example: "Active"
-                    type: "string"
-                  currentDateTime:
-                    example: "2023-08-01 11:34:01-05:00"
-                    type: "string"
-                    format: "date-time"
-                  maximumVolumeMeasure:
-                    type: "object"
-                    required:
-                    - "content"
-                    additionalProperties: false
-                    properties:
-                      content:
-                        type: "number"
-                        example: "800"
-                      unitCode:
-                        example: "BU"
-                        type: "string"
-                        format: "token"
-                  maximumWeightMeasure:
-                    type: "object"
-                    required:
-                    - "content"
-                    additionalProperties: false
-                    properties:
-                      content:
-                        type: "number"
-                        example: "48000"
-                      unitCode:
-                        example: "LBS"
-                        type: "string"
-                        format: "token"
-              availableVolumeMeasure:
-                example: "800"
-                type: "number"
-              availableWeightMeasure:
-                example: "48000"
-                type: "number"
-              startMaterialVolumeMeasure:
-                example: "0"
-                type: "number"
-              startMaterialWeightMeasure:
-                example: "0"
-                type: "number"
-              endMaterialVolumeMeasure:
-                example: null
-                type: "number"
-              endMaterialWeightMeasure:
-                example: null
-                type: "number"
     deviceResource:
       x-oagis-bie-guid: "1605fba011964baf9059b75994ace48f"
       x-oagis-bie-date-time: "2024-06-03T02:24:14+0000"
@@ -640,40 +536,14 @@ components:
           example: "Equipment"
           type: "string"
           format: "normalizedString"
-    status:
-      x-oagis-bie-guid: "491483e86fc24d4d82f421fcfc1b6e93"
-      x-oagis-bie-date-time: "2024-06-03T03:06:07+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Status"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/936"
-      x-oagis-release: "10.11"
-      x-oagis-release-date: "2024-05-10"
-      type: "object"
-      additionalProperties: false
-      properties:
-        code:
-          example: "Started"
-          type: "string"
-          format: "normalizedString"
-        reasonCode:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        reason:
-          example: ""
-          type: "string"
-    containerList:
-      type: "array"
-      items:
-        $ref: "#/components/schemas/containerListEntry"
-    containerListEntry:
-      x-oagis-bie-guid: "81766ac7c11a465b878bb78373d43c3e"
-      x-oagis-bie-date-time: "2023-11-05T13:20:08+0000"
+    container:
+      x-oagis-bie-guid: "2d592835eab94477b47335b077666bba"
+      x-oagis-bie-date-time: "2024-06-03T18:14:29+0000"
       x-oagis-bie-version: "V1"
       x-oagis-bie-den: "Container"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/863"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/940"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
       type: "object"
       additionalProperties: false
       properties:
@@ -690,21 +560,56 @@ components:
           type: "string"
           format: "normalizedString"
         sourceId:
-          oneOf:
-          - nullable: true
-          - example: ""
-            type: "string"
-            format: "normalizedString"
-        partyId:
-          example: ""
+          example: "Data Platform"
           type: "string"
           format: "normalizedString"
-        name:
-          example: "Dad's Kinze"
+        partyId:
+          example: "RetailerA"
           type: "string"
+          format: "normalizedString"
+        relatedId:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              id:
+                oneOf:
+                - nullable: true
+                - example: ""
+                  type: "string"
+                  format: "normalizedString"
+              uuid:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              sourceId:
+                oneOf:
+                - nullable: true
+                - example: ""
+                  type: "string"
+                  format: "normalizedString"
+              partyId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
         description:
-          example: "Kinze 940"
+          example: "Planter Bin 1 on Kinze"
           type: "string"
+        containerGroupId:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "string"
+              format: "normalizedString"
+              example: "1"
+            typeCode:
+              example: "Section"
+              type: "string"
+              format: "token"
         capacity:
           type: "object"
           additionalProperties: false
@@ -739,26 +644,713 @@ components:
                   example: "LBS"
                   type: "string"
                   format: "token"
+        deviceResource:
+          type: "object"
+          additionalProperties: false
+          properties:
+            uuid:
+              example: "570612be-db3b-4a76-944c-c11f3fb5bed8"
+              type: "string"
+              format: "normalizedString"
+            deviceItem:
+              type: "array"
+              items:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  typeCode:
+                    example: "Planter"
+                    type: "string"
+                    format: "token"
+                  productName:
+                    example: "5670"
+                    type: "string"
+                  brandName:
+                    example: "Kinze"
+                    type: "string"
         containerState:
           type: "array"
           items:
             type: "object"
             additionalProperties: false
             properties:
+              typeCode:
+                example: "Capacity"
+                type: "string"
+                format: "token"
+              status:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  code:
+                    example: "EMPTY"
+                    type: "string"
+                    format: "normalizedString"
+                  reasonCode:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  reason:
+                    example: ""
+                    type: "string"
+                  effectiveTimePeriod:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      typeCode:
+                        example: "Epoch"
+                        type: "string"
+                        format: "token"
+                      startDateTime:
+                        example: ""
+                        type: "string"
+                      endDateTime:
+                        example: ""
+                        type: "string"
+                        format: "date-time"
+              currentMaximumCapacity:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  reasonCode:
+                    example: "COMPACTION"
+                    type: "string"
+                    format: "normalizedString"
+                  reason:
+                    example: "Jeremy said so - higher moisture content."
+                    type: "string"
+                  effectiveTimePeriod:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      startDateTime:
+                        example: "2023-07-23 11:34:01-05:00"
+                        type: "string"
+                        format: "date-time"
+                      endDateTime:
+                        example: ""
+                        type: "string"
+                        format: "date-time"
+                  statusIndicator:
+                    example: "Active"
+                    type: "string"
+                  currentDateTime:
+                    example: "2023-08-01 11:34:01-05:00"
+                    type: "string"
+                    format: "date-time"
+                  maximumVolumeMeasure:
+                    type: "object"
+                    required:
+                    - "content"
+                    additionalProperties: false
+                    properties:
+                      content:
+                        type: "number"
+                        example: "800"
+                      unitCode:
+                        example: "BU"
+                        type: "string"
+                        format: "token"
+                  maximumWeightMeasure:
+                    type: "object"
+                    required:
+                    - "content"
+                    additionalProperties: false
+                    properties:
+                      content:
+                        type: "number"
+                        example: "48000"
+                      unitCode:
+                        example: "LBS"
+                        type: "string"
+                        format: "token"
+                  declaringParty:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: "972a57dc-c679-4c73-9c2c-f548a77a5f4b"
+                        type: "string"
+                        format: "normalizedString"
+                      name:
+                        example: "Jeremy"
+                        type: "string"
               availableVolumeMeasure:
-                example: "0"
-                type: "number"
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "800"
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
               availableWeightMeasure:
-                example: "0"
-                type: "number"
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "48000"
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+              startMaterialVolumeMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "0"
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
+              startMaterialWeightMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "0"
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+              endMaterialVolumeMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: null
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
+              endMaterialWeightMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: null
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+    status:
+      x-oagis-bie-guid: "491483e86fc24d4d82f421fcfc1b6e93"
+      x-oagis-bie-date-time: "2024-06-03T03:06:07+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Status"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/936"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        code:
+          example: "Started"
+          type: "string"
+          format: "normalizedString"
+        reasonCode:
+          example: ""
+          type: "string"
+          format: "normalizedString"
+        reason:
+          example: ""
+          type: "string"
+    containerResponse:
+      x-oagis-bie-guid: "2d592835eab94477b47335b077666bba"
+      x-oagis-bie-date-time: "2024-06-03T18:14:29+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Container"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/940"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        typeCode:
+          example: "Planter_Box"
+          type: "string"
+          format: "token"
+        id:
+          example: "1"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          example: "Data Platform"
+          type: "string"
+          format: "normalizedString"
+        partyId:
+          example: "RetailerA"
+          type: "string"
+          format: "normalizedString"
+        relatedId:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              id:
+                oneOf:
+                - nullable: true
+                - example: ""
+                  type: "string"
+                  format: "normalizedString"
+              uuid:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              sourceId:
+                oneOf:
+                - nullable: true
+                - example: ""
+                  type: "string"
+                  format: "normalizedString"
+              partyId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+        description:
+          example: "Planter Bin 1 on Kinze"
+          type: "string"
+        containerGroupId:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "string"
+              format: "normalizedString"
+              example: "1"
+            typeCode:
+              example: "Section"
+              type: "string"
+              format: "token"
+        capacity:
+          type: "object"
+          additionalProperties: false
+          properties:
+            typeCode:
+              example: "Specified"
+              type: "string"
+              format: "token"
+            maximumVolumeMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "950"
+                unitCode:
+                  example: "BU"
+                  type: "string"
+                  format: "token"
+            maximumWeightMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "53200"
+                unitCode:
+                  example: "LBS"
+                  type: "string"
+                  format: "token"
+        deviceResource:
+          type: "object"
+          additionalProperties: false
+          properties:
+            uuid:
+              example: "570612be-db3b-4a76-944c-c11f3fb5bed8"
+              type: "string"
+              format: "normalizedString"
+            deviceItem:
+              type: "array"
+              items:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  typeCode:
+                    example: "Planter"
+                    type: "string"
+                    format: "token"
+                  productName:
+                    example: "5670"
+                    type: "string"
+                  brandName:
+                    example: "Kinze"
+                    type: "string"
+        containerState:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              typeCode:
+                example: "Capacity"
+                type: "string"
+                format: "token"
+              status:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  code:
+                    example: "EMPTY"
+                    type: "string"
+                    format: "normalizedString"
+                  reasonCode:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  reason:
+                    example: ""
+                    type: "string"
+                  effectiveTimePeriod:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      typeCode:
+                        example: "Epoch"
+                        type: "string"
+                        format: "token"
+                      startDateTime:
+                        example: ""
+                        type: "string"
+                      endDateTime:
+                        example: ""
+                        type: "string"
+                        format: "date-time"
+              currentMaximumCapacity:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  reasonCode:
+                    example: "COMPACTION"
+                    type: "string"
+                    format: "normalizedString"
+                  reason:
+                    example: "Jeremy said so - higher moisture content."
+                    type: "string"
+                  effectiveTimePeriod:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      startDateTime:
+                        example: "2023-07-23 11:34:01-05:00"
+                        type: "string"
+                        format: "date-time"
+                      endDateTime:
+                        example: ""
+                        type: "string"
+                        format: "date-time"
+                  statusIndicator:
+                    example: "Active"
+                    type: "string"
+                  currentDateTime:
+                    example: "2023-08-01 11:34:01-05:00"
+                    type: "string"
+                    format: "date-time"
+                  maximumVolumeMeasure:
+                    type: "object"
+                    required:
+                    - "content"
+                    additionalProperties: false
+                    properties:
+                      content:
+                        type: "number"
+                        example: "800"
+                      unitCode:
+                        example: "BU"
+                        type: "string"
+                        format: "token"
+                  maximumWeightMeasure:
+                    type: "object"
+                    required:
+                    - "content"
+                    additionalProperties: false
+                    properties:
+                      content:
+                        type: "number"
+                        example: "48000"
+                      unitCode:
+                        example: "LBS"
+                        type: "string"
+                        format: "token"
+                  declaringParty:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: "972a57dc-c679-4c73-9c2c-f548a77a5f4b"
+                        type: "string"
+                        format: "normalizedString"
+                      name:
+                        example: "Jeremy"
+                        type: "string"
+              availableVolumeMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "800"
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
+              availableWeightMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "48000"
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+              startMaterialVolumeMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "0"
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
+              startMaterialWeightMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "0"
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+              endMaterialVolumeMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: null
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
+              endMaterialWeightMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: null
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+    containerList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/containerListEntry"
+    containerListEntry:
+      x-oagis-bie-guid: "1f8d66a2bf4a4f43ba5035147b308f9a"
+      x-oagis-bie-date-time: "2024-06-05T01:26:53+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Container"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/941"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        typeCode:
+          example: "planter-bin"
+          type: "string"
+          format: "token"
+        id:
+          example: "1"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          example: "Data Platform"
+          type: "string"
+          format: "normalizedString"
+        partyId:
+          example: "RetailerA"
+          type: "string"
+          format: "normalizedString"
+        description:
+          example: "Planter Bin 1 on Kinze"
+          type: "string"
+        containerGroupId:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "string"
+              format: "normalizedString"
+              example: "1"
+            typeCode:
+              example: "Section"
+              type: "string"
+              format: "token"
+        deviceResource:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              uuid:
+                example: "570612be-db3b-4a76-944c-c11f3fb5bed8"
+                type: "string"
+                format: "normalizedString"
+              deviceItem:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  typeCode:
+                    example: "Planter"
+                    type: "string"
+                    format: "token"
+                  productName:
+                    example: "5670"
+                    type: "string"
+                  brandName:
+                    example: "Kinze"
+                    type: "string"
+        containerState:
+          type: "object"
+          additionalProperties: false
+          properties:
+            typeCode:
+              example: "Capacity"
+              type: "string"
+              format: "token"
+            status:
+              type: "object"
+              additionalProperties: false
+              properties:
+                code:
+                  example: "EMPTY"
+                  type: "string"
+                  format: "normalizedString"
+                reasonCode:
+                  example: ""
+                  type: "string"
+                  format: "normalizedString"
+                reason:
+                  example: ""
+                  type: "string"
+            availableVolumeMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "800"
+                unitCode:
+                  example: "BSH"
+                  type: "string"
+                  format: "token"
+            availableWeightMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "48000"
+                unitCode:
+                  example: "LB"
+                  type: "string"
+                  format: "token"
+            startMaterialVolumeMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "0"
+                unitCode:
+                  example: "BSH"
+                  type: "string"
+                  format: "token"
+            startMaterialWeightMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "0"
+                unitCode:
+                  example: "LB"
+                  type: "string"
+                  format: "token"
     containerState:
-      x-oagis-bie-guid: "db2b7b4c9281441ca7b9d37b65d37bf1"
-      x-oagis-bie-date-time: "2023-11-05T15:02:28+0000"
+      x-oagis-bie-guid: "d25e668f112d468c8d1b4796e2926263"
+      x-oagis-bie-date-time: "2024-06-03T16:16:42+0000"
       x-oagis-bie-version: "V1"
       x-oagis-bie-den: "Container State"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/868"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/939"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
       type: "object"
       additionalProperties: false
       properties:
@@ -841,166 +1433,35 @@ components:
               example: "LB"
               type: "string"
               format: "token"
-    containerResponse:
-      x-oagis-bie-guid: "d5ad661bdd074a36b8bf0a7b9aa50448"
-      x-oagis-bie-date-time: "2023-11-05T13:01:44+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Container"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/859"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
-      type: "object"
-      additionalProperties: false
-      properties:
-        id:
-          example: "1"
-          type: "string"
-          format: "normalizedString"
-        uuid:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        containerState:
-          type: "object"
-          additionalProperties: false
-          properties:
-            id:
-              example: ""
-              type: "string"
-              format: "normalizedString"
-            status:
-              type: "object"
-              additionalProperties: false
-              properties:
-                code:
-                  example: "EMPTY"
-                  type: "string"
-                  format: "normalizedString"
-                reasonCode:
-                  example: ""
-                  type: "string"
-                  format: "normalizedString"
-                reason:
-                  example: ""
-                  type: "string"
-                effectiveTimePeriod:
-                  type: "object"
-                  additionalProperties: false
-                  properties:
-                    typeCode:
-                      example: "Epoch"
-                      type: "string"
-                      format: "token"
-                    startDateTime:
-                      example: ""
-                      type: "string"
-                    endDateTime:
-                      example: ""
-                      type: "string"
-                      format: "date-time"
-            availableVolumeMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "800"
-                unitCode:
-                  example: ""
-                  type: "string"
-                  format: "token"
-            availableWeightMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "48000"
-                unitCode:
-                  example: ""
-                  type: "string"
-                  format: "token"
-            startMaterialVolumeMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "0"
-                unitCode:
-                  example: ""
-                  type: "string"
-                  format: "token"
-            startMaterialWeightMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "0"
-                unitCode:
-                  example: ""
-                  type: "string"
-                  format: "token"
-            endMaterialVolumeMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: null
-                unitCode:
-                  example: ""
-                  type: "string"
-                  format: "token"
-            endMaterialWeightMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: null
-                unitCode:
-                  example: ""
-                  type: "string"
-                  format: "token"
     criticalTrackingEventRequestCreate:
-      x-oagis-bie-guid: "8d829074363b4f7a957cd89429069cbf"
-      x-oagis-bie-date-time: "2023-11-06T01:36:49+0000"
+      x-oagis-bie-guid: "4c57aa340d2b491da3021e3682dc3eb5"
+      x-oagis-bie-date-time: "2024-06-05T02:37:20+0000"
       x-oagis-bie-version: "V1"
       x-oagis-bie-den: "Critical Tracking Event"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/873"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/944"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
       type: "object"
       additionalProperties: false
       properties:
         criticalTrackingEventType:
-          example: "Transfer"
+          example: "Planting"
           type: "string"
           format: "normalizedString"
+        processCategory:
+          type: "object"
+          additionalProperties: false
+          properties:
+            code:
+              example: ""
+              type: "string"
+              format: "normalizedString"
         timePeriod:
           type: "object"
           additionalProperties: false
           properties:
             startDateTime:
               example: "2023-09-22 08:34:01.034-06:00"
-              type: "string"
-              format: "date-time"
-            endDateTime:
-              example: "2023-09-22 08:54:01.343-06:00"
               type: "string"
               format: "date-time"
         geospatial:
@@ -1060,6 +1521,7 @@ components:
             required:
             - "itemInstance"
             - "status"
+            - "container"
             additionalProperties: false
             properties:
               typeCode:
@@ -1092,17 +1554,21 @@ components:
                   additionalProperties: false
                   properties:
                     lot:
-                      type: "array"
-                      items:
-                        type: "object"
-                        additionalProperties: false
-                        properties:
-                          typeCode:
-                            example: "Lot"
-                            type: "string"
-                            format: "token"
-                          id:
-                            example: ""
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        typeCode:
+                          example: "Lot"
+                          type: "string"
+                          format: "token"
+                        id:
+                          example: "LTE0343"
+                          type: "string"
+                          format: "normalizedString"
+                        serialNumberId:
+                          type: "array"
+                          items:
+                            example: "3435678090"
                             type: "string"
                             format: "normalizedString"
                     item:
@@ -1114,11 +1580,11 @@ components:
                           additionalProperties: false
                           properties:
                             id:
-                              example: ""
+                              example: "798"
                               type: "string"
                               format: "normalizedString"
                         gtinid:
-                          example: ""
+                          example: "0987654321"
                           type: "string"
                           format: "normalizedString"
                         brandName:
@@ -1195,12 +1661,219 @@ components:
                         example: "2023-08-09"
                         type: "string"
                         format: "date-time"
-                      endDateTime:
-                        example: ""
-                        type: "string"
-                        format: "date-time"
               container:
-                $ref: "#/components/schemas/container"
+                type: "object"
+                additionalProperties: false
+                properties:
+                  typeCode:
+                    example: "Planter_Box"
+                    type: "string"
+                    format: "token"
+                  id:
+                    example: "1"
+                    type: "string"
+                    format: "normalizedString"
+                  uuid:
+                    example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
+                    type: "string"
+                    format: "normalizedString"
+                  sourceId:
+                    example: "Data Platform"
+                    type: "string"
+                    format: "normalizedString"
+                  partyId:
+                    example: "RetailerA"
+                    type: "string"
+                    format: "normalizedString"
+                  relatedId:
+                    type: "array"
+                    items:
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        id:
+                          oneOf:
+                          - nullable: true
+                          - example: ""
+                            type: "string"
+                            format: "normalizedString"
+                        uuid:
+                          example: ""
+                          type: "string"
+                          format: "normalizedString"
+                        sourceId:
+                          oneOf:
+                          - nullable: true
+                          - example: ""
+                            type: "string"
+                            format: "normalizedString"
+                        partyId:
+                          example: ""
+                          type: "string"
+                          format: "normalizedString"
+                  description:
+                    example: "Planter Bin 1 on Kinze"
+                    type: "string"
+                  containerGroupId:
+                    type: "object"
+                    required:
+                    - "content"
+                    additionalProperties: false
+                    properties:
+                      content:
+                        type: "string"
+                        format: "normalizedString"
+                        example: "1"
+                      typeCode:
+                        example: "Section"
+                        type: "string"
+                        format: "token"
+                  capacity:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      typeCode:
+                        example: "Specified"
+                        type: "string"
+                        format: "token"
+                      maximumVolumeMeasure:
+                        type: "object"
+                        required:
+                        - "content"
+                        additionalProperties: false
+                        properties:
+                          content:
+                            type: "number"
+                            example: "950"
+                          unitCode:
+                            example: "BU"
+                            type: "string"
+                            format: "token"
+                      maximumWeightMeasure:
+                        type: "object"
+                        required:
+                        - "content"
+                        additionalProperties: false
+                        properties:
+                          content:
+                            type: "number"
+                            example: "53200"
+                          unitCode:
+                            example: "LBS"
+                            type: "string"
+                            format: "token"
+                  deviceResource:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      uuid:
+                        example: "570612be-db3b-4a76-944c-c11f3fb5bed8"
+                        type: "string"
+                        format: "normalizedString"
+                      deviceItem:
+                        type: "array"
+                        items:
+                          type: "object"
+                          additionalProperties: false
+                          properties:
+                            typeCode:
+                              example: "Planter"
+                              type: "string"
+                              format: "token"
+                            productName:
+                              example: "5670"
+                              type: "string"
+                            brandName:
+                              example: "Kinze"
+                              type: "string"
+                  containerState:
+                    type: "array"
+                    items:
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        typeCode:
+                          example: "Capacity"
+                          type: "string"
+                          format: "token"
+                        status:
+                          type: "object"
+                          additionalProperties: false
+                          properties:
+                            code:
+                              example: "FULL"
+                              type: "string"
+                              format: "normalizedString"
+                            reasonCode:
+                              example: ""
+                              type: "string"
+                              format: "normalizedString"
+                            reason:
+                              example: ""
+                              type: "string"
+                            effectiveTimePeriod:
+                              type: "object"
+                              additionalProperties: false
+                              properties:
+                                typeCode:
+                                  example: "UTC"
+                                  type: "string"
+                                  format: "token"
+                                startDateTime:
+                                  example: ""
+                                  type: "string"
+                        availableVolumeMeasure:
+                          type: "object"
+                          required:
+                          - "content"
+                          additionalProperties: false
+                          properties:
+                            content:
+                              type: "number"
+                              example: "0"
+                            unitCode:
+                              example: "BSH"
+                              type: "string"
+                              format: "token"
+                        availableWeightMeasure:
+                          type: "object"
+                          required:
+                          - "content"
+                          additionalProperties: false
+                          properties:
+                            content:
+                              type: "number"
+                              example: "0"
+                            unitCode:
+                              example: "LB"
+                              type: "string"
+                              format: "token"
+                        startMaterialVolumeMeasure:
+                          type: "object"
+                          required:
+                          - "content"
+                          additionalProperties: false
+                          properties:
+                            content:
+                              type: "number"
+                              example: "50"
+                            unitCode:
+                              example: "BSH"
+                              type: "string"
+                              format: "token"
+                        startMaterialWeightMeasure:
+                          type: "object"
+                          required:
+                          - "content"
+                          additionalProperties: false
+                          properties:
+                            content:
+                              type: "number"
+                              example: "50"
+                            unitCode:
+                              example: "LB"
+                              type: "string"
+                              format: "token"
         keyDataElement:
           type: "array"
           items:
@@ -1237,6 +1910,14 @@ components:
               example: "planting"
               type: "string"
               format: "token"
+            operationTimePeriod:
+              type: "object"
+              additionalProperties: false
+              properties:
+                startDateTime:
+                  example: ""
+                  type: "string"
+                  format: "date-time"
         operatorParty:
           type: "array"
           items:
@@ -1304,13 +1985,13 @@ components:
                     type: "string"
                     format: "normalizedString"
     criticalTrackingEventListEntry:
-      x-oagis-bie-guid: "4526edadcfc5450db415952286537b19"
-      x-oagis-bie-date-time: "2023-11-06T01:38:07+0000"
+      x-oagis-bie-guid: "9cdf38879a754e5fbc34892b3b10746c"
+      x-oagis-bie-date-time: "2024-06-05T02:18:10+0000"
       x-oagis-bie-version: "V1"
       x-oagis-bie-den: "Critical Tracking Event"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/874"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/943"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
       type: "object"
       additionalProperties: false
       properties:
@@ -1443,17 +2124,17 @@ components:
                   additionalProperties: false
                   properties:
                     lot:
-                      type: "array"
-                      items:
-                        type: "object"
-                        additionalProperties: false
-                        properties:
-                          typeCode:
-                            example: "Lot"
-                            type: "string"
-                            format: "token"
-                          id:
-                            example: ""
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        id:
+                          example: "LTE0343"
+                          type: "string"
+                          format: "normalizedString"
+                        serialNumberId:
+                          type: "array"
+                          items:
+                            example: "3435678090"
                             type: "string"
                             format: "normalizedString"
                     item:
@@ -1465,11 +2146,11 @@ components:
                           additionalProperties: false
                           properties:
                             id:
-                              example: ""
+                              example: "798"
                               type: "string"
                               format: "normalizedString"
                         gtinid:
-                          example: ""
+                          example: "0987654321"
                           type: "string"
                           format: "normalizedString"
                         brandName:
@@ -1698,13 +2379,13 @@ components:
       items:
         $ref: "#/components/schemas/criticalTrackingEvent"
     criticalTrackingEvent:
-      x-oagis-bie-guid: "4526edadcfc5450db415952286537b19"
-      x-oagis-bie-date-time: "2023-11-06T01:38:07+0000"
+      x-oagis-bie-guid: "9cdf38879a754e5fbc34892b3b10746c"
+      x-oagis-bie-date-time: "2024-06-05T02:18:10+0000"
       x-oagis-bie-version: "V1"
       x-oagis-bie-den: "Critical Tracking Event"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/874"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/943"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
       type: "object"
       additionalProperties: false
       properties:
@@ -1837,17 +2518,17 @@ components:
                   additionalProperties: false
                   properties:
                     lot:
-                      type: "array"
-                      items:
-                        type: "object"
-                        additionalProperties: false
-                        properties:
-                          typeCode:
-                            example: "Lot"
-                            type: "string"
-                            format: "token"
-                          id:
-                            example: ""
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        id:
+                          example: "LTE0343"
+                          type: "string"
+                          format: "normalizedString"
+                        serialNumberId:
+                          type: "array"
+                          items:
+                            example: "3435678090"
                             type: "string"
                             format: "normalizedString"
                     item:
@@ -1859,11 +2540,11 @@ components:
                           additionalProperties: false
                           properties:
                             id:
-                              example: ""
+                              example: "798"
                               type: "string"
                               format: "normalizedString"
                         gtinid:
-                          example: ""
+                          example: "0987654321"
                           type: "string"
                           format: "normalizedString"
                         brandName:
@@ -2088,32 +2769,16 @@ components:
                     type: "string"
                     format: "normalizedString"
     criticalTrackingEventRequestUpdate:
-      x-oagis-bie-guid: "41e9f91e934b4df29df3f1aa0d7beff8"
-      x-oagis-bie-date-time: "2024-05-08T20:55:34+0000"
+      x-oagis-bie-guid: "df0b3cc91c7c483a8b8cb5e89c67bc3d"
+      x-oagis-bie-date-time: "2024-06-05T02:13:59+0000"
       x-oagis-bie-version: "V1"
       x-oagis-bie-den: "Critical Tracking Event"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/933"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/942"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
       type: "object"
       additionalProperties: false
       properties:
-        id:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        uuid:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        sourceId:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        partyId:
-          example: ""
-          type: "string"
-          format: "normalizedString"
         timePeriod:
           type: "object"
           additionalProperties: false
@@ -2179,6 +2844,7 @@ components:
             required:
             - "itemInstance"
             - "status"
+            - "container"
             additionalProperties: false
             properties:
               typeCode:
@@ -2315,344 +2981,98 @@ components:
                         type: "string"
                         format: "date-time"
               container:
-                $ref: "#/components/schemas/container"
-        keyDataElement:
-          type: "array"
-          items:
-            type: "object"
-            additionalProperties: false
-            properties:
-              typeCode:
-                example: "shipment.id"
-                type: "string"
-                format: "token"
-              id:
-                example: "12332"
-                type: "string"
-                format: "normalizedString"
-              sourceId:
-                example: "AgVance"
-                type: "string"
-                format: "normalizedString"
-              partyId:
-                example: "RetailerA"
-                type: "string"
-                format: "normalizedString"
-              name:
-                example: "Retailer Shipment Identifier"
-                type: "string"
-        operation:
-          type: "object"
-          additionalProperties: false
-          properties:
-            operationTimePeriod:
-              type: "object"
-              additionalProperties: false
-              properties:
-                endDateTime:
-                  example: ""
-                  type: "string"
-                  format: "date-time"
-        publisherParty:
-          type: "array"
-          items:
-            type: "object"
-            additionalProperties: false
-            properties:
-              typeCode:
-                example: ""
-                type: "string"
-                format: "token"
-              id:
-                example: ""
-                type: "string"
-                format: "normalizedString"
-              name:
-                example: ""
-                type: "string"
-        relatedDatasetMetadataReference:
-          type: "array"
-          items:
-            type: "object"
-            additionalProperties: false
-            properties:
-              typeCode:
-                example: "work-record"
-                type: "string"
-                format: "token"
-              id:
-                type: "array"
-                items:
-                  example: "a4ebaf89-a71b-44d6-8dec-1c0f4cf0400d"
-                  type: "string"
-                  format: "normalizedString"
-              uuid:
-                example: ""
-                type: "string"
-                format: "normalizedString"
-              sourceId:
-                example: ""
-                type: "string"
-                format: "normalizedString"
-              partyId:
-                example: ""
-                type: "string"
-                format: "normalizedString"
-              relatedId:
-                type: "array"
-                items:
-                  type: "object"
-                  additionalProperties: false
-                  properties: {}
-              uri:
-                example: "https://farmer.oemplanform.com/processed-dataset/a4ebaf89-a71b-44d6-8dec-1c0f4cf0400d"
-                type: "string"
-                format: "normalizedString"
-              publicationDateTime:
-                example: "2023-05-02 09:32:34.342-05:00"
-                type: "string"
-                format: "date-time"
-              datasetTypeCode:
-                example: "Processed"
-                type: "string"
-                format: "normalizedString"
-              processCategory:
                 type: "object"
                 additionalProperties: false
                 properties:
-                  code:
-                    example: "planting"
+                  id:
+                    example: "1"
                     type: "string"
                     format: "normalizedString"
-    criticalTrackingEventResponse:
-      x-oagis-bie-guid: "41e9f91e934b4df29df3f1aa0d7beff8"
-      x-oagis-bie-date-time: "2024-05-08T20:55:34+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Critical Tracking Event"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/933"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
-      type: "object"
-      additionalProperties: false
-      properties:
-        id:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        uuid:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        sourceId:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        partyId:
-          example: ""
-          type: "string"
-          format: "normalizedString"
-        timePeriod:
-          type: "object"
-          additionalProperties: false
-          properties:
-            endDateTime:
-              example: "2023-09-22 08:54:01.343-06:00"
-              type: "string"
-              format: "date-time"
-        geospatial:
-          type: "object"
-          additionalProperties: false
-          properties:
-            typeCode:
-              example: "Multi-Polygon"
-              type: "string"
-              format: "token"
-            uuid:
-              example: "e3a8aec7-f2a2-4cb3-a5c7-02358c588002"
-              type: "string"
-              format: "normalizedString"
-            sourceId:
-              example: "OEM Platform"
-              type: "string"
-              format: "normalizedString"
-            partyId:
-              example: "OEM Party Id"
-              type: "string"
-              format: "normalizedString"
-            description:
-              example: "Back 40"
-              type: "string"
-            formatCode:
-              example: "GeoJSON"
-              type: "string"
-              format: "token"
-            value:
-              example: " [           [             [100.0, 0.0],             [101.0,\
-                \ 0.0],             [101.0, 1.0],             [100.0, 1.0],      \
-                \       [100.0, 0.0]           ]         ]"
-              type: "string"
-            uri:
-              example: "https://api.oemplatform.com/field/e3a8aec7-f2a2-4cb3-a5c7-02358c588002"
-              type: "string"
-              format: "normalizedString"
-            geographicalRegionCode:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "string"
-                  format: "normalizedString"
-                  example: "Midwest IA"
-                typeCode:
-                  example: "SupplyShed"
-                  type: "string"
-                  format: "token"
-        traceableResourceUnit:
-          type: "array"
-          items:
-            type: "object"
-            required:
-            - "itemInstance"
-            - "status"
-            additionalProperties: false
-            properties:
-              typeCode:
-                example: "Source"
-                type: "string"
-                format: "token"
-              id:
-                example: "1"
-                type: "string"
-                format: "normalizedString"
-              uuid:
-                example: "de79409d-2477-48ae-8db7-aea73f2da29c"
-                type: "string"
-                format: "normalizedString"
-              sourceId:
-                oneOf:
-                - nullable: true
-                - example: "OEM Platform"
-                  type: "string"
-                  format: "normalizedString"
-              partyId:
-                example: "OEM Name"
-                type: "string"
-                format: "normalizedString"
-              itemInstance:
-                type: "array"
-                minItems: 1
-                items:
-                  type: "object"
-                  additionalProperties: false
-                  properties:
-                    lot:
-                      type: "array"
-                      items:
-                        type: "object"
-                        additionalProperties: false
-                        properties:
-                          typeCode:
-                            example: "Lot"
-                            type: "string"
-                            format: "token"
-                          id:
-                            example: ""
-                            type: "string"
-                            format: "normalizedString"
-                    item:
+                  uuid:
+                    example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
+                    type: "string"
+                    format: "normalizedString"
+                  sourceId:
+                    oneOf:
+                    - nullable: true
+                    - example: ""
+                      type: "string"
+                      format: "normalizedString"
+                  partyId:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  relatedId:
+                    type: "array"
+                    items:
                       type: "object"
                       additionalProperties: false
                       properties:
-                        manufacturerItemIdentification:
-                          type: "object"
-                          additionalProperties: false
-                          properties:
-                            id:
-                              example: ""
-                              type: "string"
-                              format: "normalizedString"
-                        gtinid:
+                        id:
+                          oneOf:
+                          - nullable: true
+                          - example: ""
+                            type: "string"
+                            format: "normalizedString"
+                        uuid:
                           example: ""
                           type: "string"
                           format: "normalizedString"
-                        brandName:
-                          example: "Croplan"
-                          type: "string"
-                        varietyName:
+                        sourceId:
+                          oneOf:
+                          - nullable: true
+                          - example: ""
+                            type: "string"
+                            format: "normalizedString"
+                        partyId:
                           example: ""
                           type: "string"
-                        itemTreatment:
-                          type: "array"
-                          items:
-                            type: "object"
-                            additionalProperties: false
-                            properties:
-                              lot:
-                                type: "object"
-                                additionalProperties: false
-                                properties:
-                                  typeCode:
-                                    example: ""
-                                    type: "string"
-                                    format: "token"
-                                  id:
-                                    example: ""
-                                    type: "string"
-                                    format: "normalizedString"
-                              substance:
-                                type: "array"
-                                items:
-                                  type: "object"
-                                  additionalProperties: false
-                                  properties:
-                                    id:
-                                      example: ""
-                                      type: "string"
-                                      format: "normalizedString"
-                                    quantity:
-                                      example: null
-                                      type: "number"
-                                    registrationStatus:
-                                      type: "array"
-                                      items:
-                                        type: "object"
-                                        additionalProperties: false
-                                        properties:
-                                          id:
-                                            example: ""
-                                            type: "string"
-                                            format: "normalizedString"
-                                          partyId:
-                                            example: "EPA"
-                                            type: "string"
-                                            format: "normalizedString"
-                                          code:
-                                            example: "Active"
-                                            type: "string"
-                                            format: "normalizedString"
-                    quantity:
-                      example: null
-                      type: "number"
-              status:
-                type: "object"
-                additionalProperties: false
-                properties:
-                  code:
-                    example: "ACTIVE"
-                    type: "string"
-                    format: "normalizedString"
-                  effectiveTimePeriod:
-                    type: "object"
-                    additionalProperties: false
-                    properties:
-                      endDateTime:
-                        example: ""
-                        type: "string"
-                        format: "date-time"
-              container:
-                $ref: "#/components/schemas/container"
+                          format: "normalizedString"
+                  containerState:
+                    type: "array"
+                    items:
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        status:
+                          type: "object"
+                          additionalProperties: false
+                          properties:
+                            code:
+                              example: "EMPTY"
+                              type: "string"
+                              format: "normalizedString"
+                            reasonCode:
+                              example: ""
+                              type: "string"
+                              format: "normalizedString"
+                            reason:
+                              example: ""
+                              type: "string"
+                            effectiveTimePeriod:
+                              type: "object"
+                              additionalProperties: false
+                              properties:
+                                typeCode:
+                                  example: "UTC"
+                                  type: "string"
+                                  format: "token"
+                                endDateTime:
+                                  example: ""
+                                  type: "string"
+                                  format: "date-time"
+                        availableVolumeMeasure:
+                          example: "800"
+                          type: "number"
+                        availableWeightMeasure:
+                          example: "48000"
+                          type: "number"
+                        endMaterialVolumeMeasure:
+                          example: null
+                          type: "number"
+                        endMaterialWeightMeasure:
+                          example: null
+                          type: "number"
         keyDataElement:
           type: "array"
           items:
@@ -2678,18 +3098,6 @@ components:
               name:
                 example: "Retailer Shipment Identifier"
                 type: "string"
-        operation:
-          type: "object"
-          additionalProperties: false
-          properties:
-            operationTimePeriod:
-              type: "object"
-              additionalProperties: false
-              properties:
-                endDateTime:
-                  example: ""
-                  type: "string"
-                  format: "date-time"
         publisherParty:
           type: "array"
           items:
@@ -3006,3 +3414,947 @@ components:
         name:
           example: "Billy Bob"
           type: "string"
+    traceableResourceUnitRequestCreate:
+      x-oagis-bie-guid: "b24dda79859f4a5a9a7d9420c3dd0a5a"
+      x-oagis-bie-date-time: "2024-06-05T03:00:46+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Traceable Resource Unit"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/945"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      required:
+      - "truRole"
+      - "itemInstance"
+      - "status"
+      additionalProperties: false
+      properties:
+        relatedId:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              typeCode:
+                example: ""
+                type: "string"
+                format: "token"
+              id:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              uuid:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              sourceId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              partyId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+        truRole:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            required:
+            - "roleCode"
+            - "timePeriod"
+            additionalProperties: false
+            properties:
+              roleCode:
+                example: "Source"
+                type: "string"
+                format: "normalizedString"
+              timePeriod:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  startDateTime:
+                    example: "2024-05-21 08:01:12.3434-05:00"
+                    type: "string"
+                    format: "date-time"
+        cteId:
+          example: ""
+          type: "string"
+          format: "normalizedString"
+        itemInstance:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              lot:
+                type: "array"
+                items:
+                  type: "object"
+                  additionalProperties: false
+                  properties:
+                    typeCode:
+                      example: "Lot"
+                      type: "string"
+                      format: "token"
+                    id:
+                      example: ""
+                      type: "string"
+                      format: "normalizedString"
+              item:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  manufacturerItemIdentification:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: ""
+                        type: "string"
+                        format: "normalizedString"
+                  gtinid:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  brandName:
+                    example: "Croplan"
+                    type: "string"
+                  varietyName:
+                    example: ""
+                    type: "string"
+                  itemTreatment:
+                    type: "array"
+                    items:
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        lot:
+                          type: "object"
+                          additionalProperties: false
+                          properties:
+                            typeCode:
+                              example: ""
+                              type: "string"
+                              format: "token"
+                            id:
+                              example: ""
+                              type: "string"
+                              format: "normalizedString"
+                        substance:
+                          type: "array"
+                          items:
+                            type: "object"
+                            additionalProperties: false
+                            properties:
+                              id:
+                                example: ""
+                                type: "string"
+                                format: "normalizedString"
+                              quantity:
+                                example: null
+                                type: "number"
+                              registrationStatus:
+                                type: "array"
+                                items:
+                                  type: "object"
+                                  additionalProperties: false
+                                  properties:
+                                    id:
+                                      example: ""
+                                      type: "string"
+                                      format: "normalizedString"
+                                    partyId:
+                                      example: "EPA"
+                                      type: "string"
+                                      format: "normalizedString"
+                                    code:
+                                      example: "Active"
+                                      type: "string"
+                                      format: "normalizedString"
+              quantity:
+                example: null
+                type: "number"
+        status:
+          type: "object"
+          additionalProperties: false
+          properties:
+            code:
+              example: "Active"
+              type: "string"
+              format: "normalizedString"
+            effectiveTimePeriod:
+              type: "object"
+              additionalProperties: false
+              properties:
+                startDateTime:
+                  example: "2024-05-21 08:01:12.3434-05:00"
+                  type: "string"
+                  format: "date-time"
+        container:
+          $ref: "#/components/schemas/container"
+    traceableResourceUnitResponseCreate:
+      x-oagis-bie-guid: "45b6fe15886d44fcadb0ab8931157ffe"
+      x-oagis-bie-date-time: "2024-06-05T03:22:57+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Traceable Resource Unit"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/946"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      required:
+      - "truRole"
+      - "itemInstance"
+      - "status"
+      additionalProperties: false
+      properties:
+        id:
+          example: "45454"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "2e9640c6-0bf6-4fa0-b9e1-dbcbe0972442"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          oneOf:
+          - nullable: true
+          - example: "Data Platform"
+            type: "string"
+            format: "normalizedString"
+        partyId:
+          example: "FarmerA"
+          type: "string"
+          format: "normalizedString"
+        relatedId:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              typeCode:
+                example: ""
+                type: "string"
+                format: "token"
+              id:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              uuid:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              sourceId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              partyId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+        truRole:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            required:
+            - "roleCode"
+            - "timePeriod"
+            additionalProperties: false
+            properties:
+              roleCode:
+                example: "Source"
+                type: "string"
+                format: "normalizedString"
+              timePeriod:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  startDateTime:
+                    example: "2024-05-21 08:01:12.3434-05:00"
+                    type: "string"
+                    format: "date-time"
+        cteId:
+          example: ""
+          type: "string"
+          format: "normalizedString"
+        itemInstance:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              lot:
+                type: "array"
+                items:
+                  type: "object"
+                  additionalProperties: false
+                  properties:
+                    typeCode:
+                      example: "Lot"
+                      type: "string"
+                      format: "token"
+                    id:
+                      example: ""
+                      type: "string"
+                      format: "normalizedString"
+              item:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  manufacturerItemIdentification:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: ""
+                        type: "string"
+                        format: "normalizedString"
+                  gtinid:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  brandName:
+                    example: "Croplan"
+                    type: "string"
+                  varietyName:
+                    example: ""
+                    type: "string"
+                  itemTreatment:
+                    type: "array"
+                    items:
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        lot:
+                          type: "object"
+                          additionalProperties: false
+                          properties:
+                            typeCode:
+                              example: ""
+                              type: "string"
+                              format: "token"
+                            id:
+                              example: ""
+                              type: "string"
+                              format: "normalizedString"
+                        substance:
+                          type: "array"
+                          items:
+                            type: "object"
+                            additionalProperties: false
+                            properties:
+                              id:
+                                example: ""
+                                type: "string"
+                                format: "normalizedString"
+                              quantity:
+                                example: null
+                                type: "number"
+                              registrationStatus:
+                                type: "array"
+                                items:
+                                  type: "object"
+                                  additionalProperties: false
+                                  properties:
+                                    id:
+                                      example: ""
+                                      type: "string"
+                                      format: "normalizedString"
+                                    partyId:
+                                      example: "EPA"
+                                      type: "string"
+                                      format: "normalizedString"
+                                    code:
+                                      example: "Active"
+                                      type: "string"
+                                      format: "normalizedString"
+              quantity:
+                example: null
+                type: "number"
+        status:
+          type: "object"
+          additionalProperties: false
+          properties:
+            code:
+              example: "Active"
+              type: "string"
+              format: "normalizedString"
+            effectiveTimePeriod:
+              type: "object"
+              additionalProperties: false
+              properties:
+                startDateTime:
+                  example: "2024-05-21 08:01:12.3434-05:00"
+                  type: "string"
+                  format: "date-time"
+        container:
+          $ref: "#/components/schemas/container"
+    traceableResourceUnitResponseRead:
+      x-oagis-bie-guid: "50300cd455124777af49f616a67497b9"
+      x-oagis-bie-date-time: "2024-06-05T03:32:07+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Traceable Resource Unit"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/948"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      required:
+      - "truRole"
+      - "itemInstance"
+      - "status"
+      additionalProperties: false
+      properties:
+        id:
+          example: "45454"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "2e9640c6-0bf6-4fa0-b9e1-dbcbe0972442"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          oneOf:
+          - nullable: true
+          - example: "Data Platform"
+            type: "string"
+            format: "normalizedString"
+        partyId:
+          example: "FarmerA"
+          type: "string"
+          format: "normalizedString"
+        relatedId:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              id:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              sourceId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              partyId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+        truRole:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            required:
+            - "roleCode"
+            - "timePeriod"
+            additionalProperties: false
+            properties:
+              roleCode:
+                example: "Source"
+                type: "string"
+                format: "normalizedString"
+              timePeriod:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  startDateTime:
+                    example: "2024-05-21 08:01:12.3434-05:00"
+                    type: "string"
+                    format: "date-time"
+                  endDateTime:
+                    example: "2024-05-21 08:54:12.3434-05:00"
+                    type: "string"
+                    format: "date-time"
+        cteId:
+          example: ""
+          type: "string"
+          format: "normalizedString"
+        itemInstance:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              lot:
+                type: "array"
+                items:
+                  type: "object"
+                  additionalProperties: false
+                  properties:
+                    typeCode:
+                      example: "Lot"
+                      type: "string"
+                      format: "token"
+                    id:
+                      example: ""
+                      type: "string"
+                      format: "normalizedString"
+              item:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  manufacturerItemIdentification:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: ""
+                        type: "string"
+                        format: "normalizedString"
+                  gtinid:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  brandName:
+                    example: "Croplan"
+                    type: "string"
+                  varietyName:
+                    example: ""
+                    type: "string"
+                  itemTreatment:
+                    type: "array"
+                    items:
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        lot:
+                          type: "object"
+                          additionalProperties: false
+                          properties:
+                            typeCode:
+                              example: ""
+                              type: "string"
+                              format: "token"
+                            id:
+                              example: ""
+                              type: "string"
+                              format: "normalizedString"
+                        substance:
+                          type: "array"
+                          items:
+                            type: "object"
+                            additionalProperties: false
+                            properties:
+                              id:
+                                example: ""
+                                type: "string"
+                                format: "normalizedString"
+                              quantity:
+                                example: null
+                                type: "number"
+                              registrationStatus:
+                                type: "array"
+                                items:
+                                  type: "object"
+                                  additionalProperties: false
+                                  properties:
+                                    id:
+                                      example: ""
+                                      type: "string"
+                                      format: "normalizedString"
+                                    partyId:
+                                      example: "EPA"
+                                      type: "string"
+                                      format: "normalizedString"
+                                    code:
+                                      example: "Active"
+                                      type: "string"
+                                      format: "normalizedString"
+              quantity:
+                example: null
+                type: "number"
+        status:
+          type: "object"
+          additionalProperties: false
+          properties:
+            code:
+              example: "Active"
+              type: "string"
+              format: "normalizedString"
+            effectiveTimePeriod:
+              type: "object"
+              additionalProperties: false
+              properties:
+                startDateTime:
+                  example: "2024-05-21 08:01:12.3434-05:00"
+                  type: "string"
+                  format: "date-time"
+                endDateTime:
+                  example: "2024-05-21 08:54:12.3434-05:00"
+                  type: "string"
+                  format: "date-time"
+        container:
+          $ref: "#/components/schemas/container"
+    traceableResourceUnitRequestUpdate:
+      x-oagis-bie-guid: "aa3e2eaca06a4de19da7a2f122d320b1"
+      x-oagis-bie-date-time: "2024-06-05T03:27:48+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Traceable Resource Unit"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/947"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      required:
+      - "truRole"
+      - "itemInstance"
+      - "status"
+      additionalProperties: false
+      properties:
+        id:
+          example: "45454"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "2e9640c6-0bf6-4fa0-b9e1-dbcbe0972442"
+          type: "string"
+          format: "normalizedString"
+        truRole:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            required:
+            - "roleCode"
+            - "timePeriod"
+            additionalProperties: false
+            properties:
+              roleCode:
+                example: "Source"
+                type: "string"
+                format: "normalizedString"
+              timePeriod:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  startDateTime:
+                    example: "2024-05-21 08:01:12.3434-05:00"
+                    type: "string"
+                    format: "date-time"
+                  endDateTime:
+                    example: "2024-05-21 08:54:12.3434-05:00"
+                    type: "string"
+                    format: "date-time"
+        cteId:
+          example: ""
+          type: "string"
+          format: "normalizedString"
+        itemInstance:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              lot:
+                type: "array"
+                items:
+                  type: "object"
+                  additionalProperties: false
+                  properties:
+                    typeCode:
+                      example: "Lot"
+                      type: "string"
+                      format: "token"
+                    id:
+                      example: ""
+                      type: "string"
+                      format: "normalizedString"
+              item:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  manufacturerItemIdentification:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: ""
+                        type: "string"
+                        format: "normalizedString"
+                  gtinid:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  brandName:
+                    example: "Croplan"
+                    type: "string"
+                  varietyName:
+                    example: ""
+                    type: "string"
+                  itemTreatment:
+                    type: "array"
+                    items:
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        lot:
+                          type: "object"
+                          additionalProperties: false
+                          properties:
+                            typeCode:
+                              example: ""
+                              type: "string"
+                              format: "token"
+                            id:
+                              example: ""
+                              type: "string"
+                              format: "normalizedString"
+                        substance:
+                          type: "array"
+                          items:
+                            type: "object"
+                            additionalProperties: false
+                            properties:
+                              id:
+                                example: ""
+                                type: "string"
+                                format: "normalizedString"
+                              quantity:
+                                example: null
+                                type: "number"
+                              registrationStatus:
+                                type: "array"
+                                items:
+                                  type: "object"
+                                  additionalProperties: false
+                                  properties:
+                                    id:
+                                      example: ""
+                                      type: "string"
+                                      format: "normalizedString"
+                                    partyId:
+                                      example: "EPA"
+                                      type: "string"
+                                      format: "normalizedString"
+                                    code:
+                                      example: "Active"
+                                      type: "string"
+                                      format: "normalizedString"
+              quantity:
+                example: null
+                type: "number"
+        status:
+          type: "object"
+          additionalProperties: false
+          properties:
+            code:
+              example: "Active"
+              type: "string"
+              format: "normalizedString"
+            effectiveTimePeriod:
+              type: "object"
+              additionalProperties: false
+              properties:
+                startDateTime:
+                  example: "2024-05-21 08:01:12.3434-05:00"
+                  type: "string"
+                  format: "date-time"
+                endDateTime:
+                  example: "2024-05-21 08:54:12.3434-05:00"
+                  type: "string"
+                  format: "date-time"
+        container:
+          $ref: "#/components/schemas/container"
+    traceableResourceUnitResponseUpdate:
+      x-oagis-bie-guid: "50300cd455124777af49f616a67497b9"
+      x-oagis-bie-date-time: "2024-06-05T03:32:07+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Traceable Resource Unit"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/948"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      required:
+      - "truRole"
+      - "itemInstance"
+      - "status"
+      additionalProperties: false
+      properties:
+        id:
+          example: "45454"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "2e9640c6-0bf6-4fa0-b9e1-dbcbe0972442"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          oneOf:
+          - nullable: true
+          - example: "Data Platform"
+            type: "string"
+            format: "normalizedString"
+        partyId:
+          example: "FarmerA"
+          type: "string"
+          format: "normalizedString"
+        relatedId:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              id:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              sourceId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              partyId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+        truRole:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            required:
+            - "roleCode"
+            - "timePeriod"
+            additionalProperties: false
+            properties:
+              roleCode:
+                example: "Source"
+                type: "string"
+                format: "normalizedString"
+              timePeriod:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  startDateTime:
+                    example: "2024-05-21 08:01:12.3434-05:00"
+                    type: "string"
+                    format: "date-time"
+                  endDateTime:
+                    example: "2024-05-21 08:54:12.3434-05:00"
+                    type: "string"
+                    format: "date-time"
+        cteId:
+          example: ""
+          type: "string"
+          format: "normalizedString"
+        itemInstance:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              lot:
+                type: "array"
+                items:
+                  type: "object"
+                  additionalProperties: false
+                  properties:
+                    typeCode:
+                      example: "Lot"
+                      type: "string"
+                      format: "token"
+                    id:
+                      example: ""
+                      type: "string"
+                      format: "normalizedString"
+              item:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  manufacturerItemIdentification:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: ""
+                        type: "string"
+                        format: "normalizedString"
+                  gtinid:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  brandName:
+                    example: "Croplan"
+                    type: "string"
+                  varietyName:
+                    example: ""
+                    type: "string"
+                  itemTreatment:
+                    type: "array"
+                    items:
+                      type: "object"
+                      additionalProperties: false
+                      properties:
+                        lot:
+                          type: "object"
+                          additionalProperties: false
+                          properties:
+                            typeCode:
+                              example: ""
+                              type: "string"
+                              format: "token"
+                            id:
+                              example: ""
+                              type: "string"
+                              format: "normalizedString"
+                        substance:
+                          type: "array"
+                          items:
+                            type: "object"
+                            additionalProperties: false
+                            properties:
+                              id:
+                                example: ""
+                                type: "string"
+                                format: "normalizedString"
+                              quantity:
+                                example: null
+                                type: "number"
+                              registrationStatus:
+                                type: "array"
+                                items:
+                                  type: "object"
+                                  additionalProperties: false
+                                  properties:
+                                    id:
+                                      example: ""
+                                      type: "string"
+                                      format: "normalizedString"
+                                    partyId:
+                                      example: "EPA"
+                                      type: "string"
+                                      format: "normalizedString"
+                                    code:
+                                      example: "Active"
+                                      type: "string"
+                                      format: "normalizedString"
+              quantity:
+                example: null
+                type: "number"
+        status:
+          type: "object"
+          additionalProperties: false
+          properties:
+            code:
+              example: "Active"
+              type: "string"
+              format: "normalizedString"
+            effectiveTimePeriod:
+              type: "object"
+              additionalProperties: false
+              properties:
+                startDateTime:
+                  example: "2024-05-21 08:01:12.3434-05:00"
+                  type: "string"
+                  format: "date-time"
+                endDateTime:
+                  example: "2024-05-21 08:54:12.3434-05:00"
+                  type: "string"
+                  format: "date-time"
+        container:
+          $ref: "#/components/schemas/container"
