@@ -31,29 +31,37 @@ DataPlatform -->MobileApp: shipped-item-instance-list
 MobileApp -> MobileApp: identify containers typeCode= bags | bulk box
 
 MobileApp -> MobileLocalAPI: POST /traceable-resource-unit-list 
-note left of MobileApp:source TRUs
-MobileLocalAPI --> MobileApp:^TRU_uuid, typeCode=source, containerId
+note left of MobileApp:source TRUs \nThese are shipping unit with material in each container
+MobileLocalAPI --> MobileApp:^truUUID, containerUUID, roleCode=source
 
-loop until this field is complete
 == pick operation; warehouse to field; transport and transfer events; tendering is more of the normal for larger farms; smaller producers are using bags==
-== fill operation, off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB  ==
-Farmer->MobileApp: Start Fill Operation
+
+== implement setup ==
+
 MobileApp -> DataPlatform: GET /device-resources
 DataPlatform --> MobileApp: ^device-resources
+
 Farmer -> MobileApp: select device configuration
+
+MobileApp -> DataPlatform: GET /container-list
+note left of MobileApp:These will become target TRUs when filled; \niInitially empty (no material therefore not a TRU)\nContainer provides capacity information that device-resource is missing
+DataPlatform --> MobileApp: ^container-list
+
+
+
+loop until this field is complete
+
+== fill and refill operation, off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB  ==
+Farmer->MobileApp: Start Fill Operation
+
 
 MobileApp -> MobileLocalAPI: POST /operation typeCode=Fill, startDateTime=, operator
 MobileLocalAPI -->MobileApp: operationUUID
 MobileApp ->Tractor Display: Wi-Fi: Start Fill Operation
 note left of Tractor Display: future state with Wi-Fi/API-led displays
-MobileApp -> MobileLocalAPI:POST  /traceable-resource-unit-list
-note left of MobileApp:target TRUs
-MobileLocalAPI --> MobileApp:^TRU-uuid, typeCode=target, containerId
 
 
-
-
-loop for-each sourceContainer (Tender Bulk Box or Seed Bag)
+loop for-each sourceContainer (TRUs; Tote, Tender Bulk Box or Seed Bag)
 note left of MobileApp:RFID, Manifest QR with serialized bulk boxes, and perhaps serialized bags
 Farmer ->MobileApp: identify source container
 Farmer ->MobileApp:record start weight or volume pct, or decrement bag inventory
@@ -71,18 +79,20 @@ Farmer ->MobileApp: identify targetContainer
 Farmer ->MobileApp:record start weight or volume pct
 Farmer ->planter Box: fill targetContainer
 
-
-MobileApp -> MobileLocalAPI: PATCH /traceable-resource-unit/{truUUID(Source)}?endWeight=$
-MobileLocalAPI -->MobileApp: truUUID(Source)
-
-
+MobileApp -> MobileLocalAPI:POST  /traceable-resource-unit-list
+note left of MobileApp:target TRU
+MobileLocalAPI --> MobileApp:^truUUID, containerUUID, roleCode=target
 end
 end
+MobileApp ->MobileLocalAPI: PATCH /operation/{operationUUID}/endDateTime&status.code=Complete
+MobileLocalAPI --> MobileApp: ^HTTP 200 operationUUID, status=success
+
 MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
+MobileLocalAPI --> MobileApp: ^HTTP 200 cteUUID, status=success
 
 note left of MobileLocalAPI: CTE transfer to planter status=complete with end date time
 note left of MobileLocalAPI:CTE includes one TRU per target container with item instance (qty/lot)\nsourceTRU has remaining item volume weight
-MobileApp ->MobileLocalAPI: PATCH /operation/{operationUUID}/endDateTime&status.code=Complete
+
 
 ==operation planting; off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB ==
 MobileApp -> MobileLocalAPI: POST /operation type=Plant
@@ -112,7 +122,9 @@ planter -> planter: record point on arable field
 planter ->Tractor Display: log point
 end
 
-Tractor Display --> MobileApp: geometry of subfield(point)
+Tractor Display --> MobileApp: geometry of cropZone (mult-polygon)
+MobileApp ->MobileLocalAPI: PATCH /operation/{operationUUID}/endDateTime&status.code=Complete
+MobileLocalAPI --> MobileApp: ^HTTP 200 operationUUID, status=success
 MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
+MobileLocalAPI --> MobileApp: ^HTTP 200 cteUUID, status=success
 end
-MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
