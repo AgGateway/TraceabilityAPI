@@ -104,8 +104,9 @@ note left of MobileLocalAPI: CTE type, \ntru.truRole.code=Source, \ntru.timePeri
 MobileLocalAPI -->MobileApp: cteUUID, truUUID. truRoleUUID(Source)
 
 loop for-each sourceTRU with planterBox
-MobileApp ->MobileLocalAPI: POST /traceable-resource-unit/{truUUID}?roleCode=source
-note left of MobileLocalAPI: creates new truRole
+MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}/traceable-resource-unit/{truUUID}?roleCode=source
+MobileLocalAPI --> MobileApp: ^HTTP cteUUID status=success
+note left of MobileLocalAPI: creates new truRole for the same TRU
 end
 Farmer -> MobileApp: start planting opertion
 MobileApp -> MobileApp: Create Operation type=Plant
@@ -125,6 +126,8 @@ end
 Tractor Display --> MobileApp: geometry of cropZone (mult-polygon)
 MobileApp ->MobileLocalAPI: PATCH /operation/{operationUUID}/endDateTime&status.code=Complete
 MobileLocalAPI --> MobileApp: ^HTTP 200 operationUUID, status=success
+
 MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
+note left of MobileApp:cte includes target TRU. \ngeometry=>cropZone with roleCode=target
 MobileLocalAPI --> MobileApp: ^HTTP 200 cteUUID, status=success
 end
