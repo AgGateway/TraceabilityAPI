@@ -15,92 +15,6 @@ info:
   version: "V1"
   x-oagis-license: ""
 paths:
-  /traceability/V1/container/{id}:
-    summary: ""
-    description: ""
-    get:
-      summary: ""
-      description: ""
-      security:
-      - OAuth2:
-        - "containerRead"
-      tags:
-      - "Containers"
-      operationId: "queryContainer"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: ""
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/containerResponse"
-  /traceability/V1/container-list:
-    summary: ""
-    description: ""
-    get:
-      summary: ""
-      description: ""
-      security:
-      - OAuth2:
-        - "containerRead"
-      tags:
-      - "Containers"
-      operationId: "queryContainerList"
-      parameters:
-      - name: "sinceLastDateTime"
-        in: "query"
-        description: "Returns resources that have been updated since the last time\
-          \ the endpoint has been called"
-        required: false
-        schema:
-          type: "string"
-          format: "date-time"
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/containerList"
-  /traceability/traceable-resource-unit/{id}/V1/container-state:
-    summary: ""
-    description: ""
-    patch:
-      summary: ""
-      description: ""
-      security:
-      - OAuth2:
-        - "containerStateWrite"
-      tags:
-      - "Containers"
-      operationId: "updateContainerState"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: ""
-        required: true
-        schema:
-          type: "string"
-      requestBody:
-        description: ""
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/containerState"
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/containerState"
   /traceability/V1/critical-tracking-event:
     summary: ""
     description: ""
@@ -231,6 +145,138 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/criticalTrackingEventListEntry"
+  /traceability/V1/operation:
+    summary: ""
+    description: ""
+    post:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "operationWrite"
+      tags:
+      - "Field Operations"
+      operationId: "createOperation"
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/operationRequest"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/operationResponse"
+  /traceability/V1/operator-party:
+    summary: ""
+    description: ""
+    post:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "operatorPartyWrite"
+      tags:
+      - "Field Operations"
+      operationId: "createOperatorParty"
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/operatorParty"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/operatorParty"
+  /traceability/V1/container/{id}:
+    summary: ""
+    description: ""
+    get:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "containerRead"
+      tags:
+      - "Field Operations"
+      operationId: "queryContainer"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/containerResponse"
+  /traceability/V1/container-list:
+    summary: ""
+    description: ""
+    get:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "containerRead"
+      tags:
+      - "Field Operations"
+      operationId: "queryContainerList"
+      parameters:
+      - name: "sinceLastDateTime"
+        in: "query"
+        description: "Returns resources that have been updated since the last time\
+          \ the endpoint has been called"
+        required: false
+        schema:
+          type: "string"
+          format: "date-time"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/containerList"
+  /traceability/V1/device-resource-list:
+    summary: ""
+    description: ""
+    get:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "deviceResourceRead"
+      tags:
+      - "Field Operations"
+      operationId: "queryDeviceResourceList"
+      parameters:
+      - name: "sinceLastDateTime"
+        in: "query"
+        description: "Returns resources that have been updated since the last time\
+          \ the endpoint has been called"
+        required: false
+        schema:
+          type: "string"
+          format: "date-time"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/deviceResourceList"
   /traceability/V1/field/{id}:
     summary: ""
     description: ""
@@ -241,7 +287,7 @@ paths:
       - OAuth2:
         - "geospatialRead"
       tags:
-      - "Fields"
+      - "Field Operations"
       operationId: "queryField"
       parameters:
       - name: "id"
@@ -267,7 +313,7 @@ paths:
       - OAuth2:
         - "geospatialRead"
       tags:
-      - "Fields"
+      - "Field Operations"
       operationId: "queryFieldList"
       parameters:
       - name: "sinceLastDateTime"
@@ -285,84 +331,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/geospatialList"
-  /traceability/V1/operation:
-    summary: ""
-    description: ""
-    post:
-      summary: ""
-      description: ""
-      security:
-      - OAuth2:
-        - "operationWrite"
-      tags:
-      - "Operations"
-      operationId: "createOperation"
-      requestBody:
-        description: ""
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/operationRequest"
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/operationResponse"
-  /traceability/V1/operator-party:
-    summary: ""
-    description: ""
-    post:
-      summary: ""
-      description: ""
-      security:
-      - OAuth2:
-        - "operatorPartyWrite"
-      tags:
-      - "Operations"
-      operationId: "createOperatorParty"
-      requestBody:
-        description: ""
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/operatorParty"
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/operatorParty"
-  /traceability/V1/device-resource-list:
-    summary: ""
-    description: ""
-    get:
-      summary: ""
-      description: ""
-      security:
-      - OAuth2:
-        - "deviceResourceRead"
-      tags:
-      - "Operations"
-      operationId: "queryDeviceResourceList"
-      parameters:
-      - name: "sinceLastDateTime"
-        in: "query"
-        description: "Returns resources that have been updated since the last time\
-          \ the endpoint has been called"
-        required: false
-        schema:
-          type: "string"
-          format: "date-time"
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/deviceResourceList"
   /traceability/V1/traceable-resource-unit:
     summary: ""
     description: ""
@@ -443,6 +411,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/traceableResourceUnitResponseUpdate"
+  /traceability/traceable-resource-unit/{id}/V1/container-state:
+    summary: ""
+    description: ""
+    patch:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "containerStateWrite"
+      tags:
+      - "Traceable Resource Unit"
+      operationId: "updateContainerState"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/containerState"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/containerState"
 components:
   securitySchemes:
     OAuth2:
@@ -452,26 +452,26 @@ components:
           authorizationUrl: "https://example.com/oauth/authorize"
           tokenUrl: "https://example.com/oauth/token"
           scopes:
-            containerRead: "Allows Container data to be read"
-            containerWrite: "Allows Container data to be written"
-            containerStateRead: "Allows Container State data to be read"
-            containerStateWrite: "Allows Container State data to be written"
             criticalTrackingEventRead: "Allows Critical Tracking Event data to be\
               \ read"
             criticalTrackingEventWrite: "Allows Critical Tracking Event data to be\
               \ written"
-            geospatialRead: "Allows Geospatial data to be read"
-            geospatialWrite: "Allows Geospatial data to be written"
             operationRead: "Allows Operation data to be read"
             operationWrite: "Allows Operation data to be written"
             operatorPartyRead: "Allows Operator Party data to be read"
             operatorPartyWrite: "Allows Operator Party data to be written"
+            containerRead: "Allows Container data to be read"
+            containerWrite: "Allows Container data to be written"
             deviceResourceRead: "Allows Device Resource data to be read"
             deviceResourceWrite: "Allows Device Resource data to be written"
+            geospatialRead: "Allows Geospatial data to be read"
+            geospatialWrite: "Allows Geospatial data to be written"
             traceableResourceUnitRead: "Allows Traceable Resource Unit data to be\
               \ read"
             traceableResourceUnitWrite: "Allows Traceable Resource Unit data to be\
               \ written"
+            containerStateRead: "Allows Container State data to be read"
+            containerStateWrite: "Allows Container State data to be written"
   schemas:
     deviceResource:
       x-oagis-bie-guid: "1605fba011964baf9059b75994ace48f"
@@ -875,564 +875,6 @@ components:
         reason:
           example: ""
           type: "string"
-    containerResponse:
-      x-oagis-bie-guid: "2d592835eab94477b47335b077666bba"
-      x-oagis-bie-date-time: "2024-06-03T18:14:29+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Container"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/940"
-      x-oagis-release: "10.11"
-      x-oagis-release-date: "2024-05-10"
-      type: "object"
-      additionalProperties: false
-      properties:
-        typeCode:
-          example: "Planter_Box"
-          type: "string"
-          format: "token"
-        id:
-          example: "1"
-          type: "string"
-          format: "normalizedString"
-        uuid:
-          example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
-          type: "string"
-          format: "normalizedString"
-        sourceId:
-          example: "Data Platform"
-          type: "string"
-          format: "normalizedString"
-        partyId:
-          example: "RetailerA"
-          type: "string"
-          format: "normalizedString"
-        relatedId:
-          type: "array"
-          items:
-            type: "object"
-            additionalProperties: false
-            properties:
-              id:
-                oneOf:
-                - nullable: true
-                - example: ""
-                  type: "string"
-                  format: "normalizedString"
-              uuid:
-                example: ""
-                type: "string"
-                format: "normalizedString"
-              sourceId:
-                oneOf:
-                - nullable: true
-                - example: ""
-                  type: "string"
-                  format: "normalizedString"
-              partyId:
-                example: ""
-                type: "string"
-                format: "normalizedString"
-        description:
-          example: "Planter Bin 1 on Kinze"
-          type: "string"
-        containerGroupId:
-          type: "object"
-          required:
-          - "content"
-          additionalProperties: false
-          properties:
-            content:
-              type: "string"
-              format: "normalizedString"
-              example: "1"
-            typeCode:
-              example: "Section"
-              type: "string"
-              format: "token"
-        capacity:
-          type: "object"
-          additionalProperties: false
-          properties:
-            typeCode:
-              example: "Specified"
-              type: "string"
-              format: "token"
-            maximumVolumeMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "950"
-                unitCode:
-                  example: "BU"
-                  type: "string"
-                  format: "token"
-            maximumWeightMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "53200"
-                unitCode:
-                  example: "LBS"
-                  type: "string"
-                  format: "token"
-        deviceResource:
-          type: "object"
-          additionalProperties: false
-          properties:
-            uuid:
-              example: "570612be-db3b-4a76-944c-c11f3fb5bed8"
-              type: "string"
-              format: "normalizedString"
-            deviceItem:
-              type: "array"
-              items:
-                type: "object"
-                additionalProperties: false
-                properties:
-                  typeCode:
-                    example: "Planter"
-                    type: "string"
-                    format: "token"
-                  productName:
-                    example: "5670"
-                    type: "string"
-                  brandName:
-                    example: "Kinze"
-                    type: "string"
-        containerState:
-          type: "array"
-          items:
-            type: "object"
-            additionalProperties: false
-            properties:
-              typeCode:
-                example: "Capacity"
-                type: "string"
-                format: "token"
-              status:
-                type: "object"
-                additionalProperties: false
-                properties:
-                  code:
-                    example: "EMPTY"
-                    type: "string"
-                    format: "normalizedString"
-                  reasonCode:
-                    example: ""
-                    type: "string"
-                    format: "normalizedString"
-                  reason:
-                    example: ""
-                    type: "string"
-                  effectiveTimePeriod:
-                    type: "object"
-                    additionalProperties: false
-                    properties:
-                      typeCode:
-                        example: "Epoch"
-                        type: "string"
-                        format: "token"
-                      startDateTime:
-                        example: ""
-                        type: "string"
-                      endDateTime:
-                        example: ""
-                        type: "string"
-                        format: "date-time"
-              currentMaximumCapacity:
-                type: "object"
-                additionalProperties: false
-                properties:
-                  reasonCode:
-                    example: "COMPACTION"
-                    type: "string"
-                    format: "normalizedString"
-                  reason:
-                    example: "Jeremy said so - higher moisture content."
-                    type: "string"
-                  effectiveTimePeriod:
-                    type: "object"
-                    additionalProperties: false
-                    properties:
-                      startDateTime:
-                        example: "2023-07-23 11:34:01-05:00"
-                        type: "string"
-                        format: "date-time"
-                      endDateTime:
-                        example: ""
-                        type: "string"
-                        format: "date-time"
-                  statusIndicator:
-                    example: "Active"
-                    type: "string"
-                  currentDateTime:
-                    example: "2023-08-01 11:34:01-05:00"
-                    type: "string"
-                    format: "date-time"
-                  maximumVolumeMeasure:
-                    type: "object"
-                    required:
-                    - "content"
-                    additionalProperties: false
-                    properties:
-                      content:
-                        type: "number"
-                        example: "800"
-                      unitCode:
-                        example: "BU"
-                        type: "string"
-                        format: "token"
-                  maximumWeightMeasure:
-                    type: "object"
-                    required:
-                    - "content"
-                    additionalProperties: false
-                    properties:
-                      content:
-                        type: "number"
-                        example: "48000"
-                      unitCode:
-                        example: "LBS"
-                        type: "string"
-                        format: "token"
-                  declaringParty:
-                    type: "object"
-                    additionalProperties: false
-                    properties:
-                      id:
-                        example: "972a57dc-c679-4c73-9c2c-f548a77a5f4b"
-                        type: "string"
-                        format: "normalizedString"
-                      name:
-                        example: "Jeremy"
-                        type: "string"
-              availableVolumeMeasure:
-                type: "object"
-                required:
-                - "content"
-                additionalProperties: false
-                properties:
-                  content:
-                    type: "number"
-                    example: "800"
-                  unitCode:
-                    example: "BSH"
-                    type: "string"
-                    format: "token"
-              availableWeightMeasure:
-                type: "object"
-                required:
-                - "content"
-                additionalProperties: false
-                properties:
-                  content:
-                    type: "number"
-                    example: "48000"
-                  unitCode:
-                    example: "LB"
-                    type: "string"
-                    format: "token"
-              startMaterialVolumeMeasure:
-                type: "object"
-                required:
-                - "content"
-                additionalProperties: false
-                properties:
-                  content:
-                    type: "number"
-                    example: "0"
-                  unitCode:
-                    example: "BSH"
-                    type: "string"
-                    format: "token"
-              startMaterialWeightMeasure:
-                type: "object"
-                required:
-                - "content"
-                additionalProperties: false
-                properties:
-                  content:
-                    type: "number"
-                    example: "0"
-                  unitCode:
-                    example: "LB"
-                    type: "string"
-                    format: "token"
-              endMaterialVolumeMeasure:
-                type: "object"
-                required:
-                - "content"
-                additionalProperties: false
-                properties:
-                  content:
-                    type: "number"
-                    example: null
-                  unitCode:
-                    example: "BSH"
-                    type: "string"
-                    format: "token"
-              endMaterialWeightMeasure:
-                type: "object"
-                required:
-                - "content"
-                additionalProperties: false
-                properties:
-                  content:
-                    type: "number"
-                    example: null
-                  unitCode:
-                    example: "LB"
-                    type: "string"
-                    format: "token"
-    containerList:
-      type: "array"
-      items:
-        $ref: "#/components/schemas/containerListEntry"
-    containerListEntry:
-      x-oagis-bie-guid: "1f8d66a2bf4a4f43ba5035147b308f9a"
-      x-oagis-bie-date-time: "2024-06-05T01:26:53+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Container"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/941"
-      x-oagis-release: "10.11"
-      x-oagis-release-date: "2024-05-10"
-      type: "object"
-      additionalProperties: false
-      properties:
-        typeCode:
-          example: "planter-bin"
-          type: "string"
-          format: "token"
-        id:
-          example: "1"
-          type: "string"
-          format: "normalizedString"
-        uuid:
-          example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
-          type: "string"
-          format: "normalizedString"
-        sourceId:
-          example: "Data Platform"
-          type: "string"
-          format: "normalizedString"
-        partyId:
-          example: "RetailerA"
-          type: "string"
-          format: "normalizedString"
-        description:
-          example: "Planter Bin 1 on Kinze"
-          type: "string"
-        containerGroupId:
-          type: "object"
-          required:
-          - "content"
-          additionalProperties: false
-          properties:
-            content:
-              type: "string"
-              format: "normalizedString"
-              example: "1"
-            typeCode:
-              example: "Section"
-              type: "string"
-              format: "token"
-        deviceResource:
-          type: "array"
-          items:
-            type: "object"
-            additionalProperties: false
-            properties:
-              uuid:
-                example: "570612be-db3b-4a76-944c-c11f3fb5bed8"
-                type: "string"
-                format: "normalizedString"
-              deviceItem:
-                type: "object"
-                additionalProperties: false
-                properties:
-                  typeCode:
-                    example: "Planter"
-                    type: "string"
-                    format: "token"
-                  productName:
-                    example: "5670"
-                    type: "string"
-                  brandName:
-                    example: "Kinze"
-                    type: "string"
-        containerState:
-          type: "object"
-          additionalProperties: false
-          properties:
-            typeCode:
-              example: "Capacity"
-              type: "string"
-              format: "token"
-            status:
-              type: "object"
-              additionalProperties: false
-              properties:
-                code:
-                  example: "EMPTY"
-                  type: "string"
-                  format: "normalizedString"
-                reasonCode:
-                  example: ""
-                  type: "string"
-                  format: "normalizedString"
-                reason:
-                  example: ""
-                  type: "string"
-            availableVolumeMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "800"
-                unitCode:
-                  example: "BSH"
-                  type: "string"
-                  format: "token"
-            availableWeightMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "48000"
-                unitCode:
-                  example: "LB"
-                  type: "string"
-                  format: "token"
-            startMaterialVolumeMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "0"
-                unitCode:
-                  example: "BSH"
-                  type: "string"
-                  format: "token"
-            startMaterialWeightMeasure:
-              type: "object"
-              required:
-              - "content"
-              additionalProperties: false
-              properties:
-                content:
-                  type: "number"
-                  example: "0"
-                unitCode:
-                  example: "LB"
-                  type: "string"
-                  format: "token"
-    containerState:
-      x-oagis-bie-guid: "d25e668f112d468c8d1b4796e2926263"
-      x-oagis-bie-date-time: "2024-06-03T16:16:42+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Container State"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/939"
-      x-oagis-release: "10.11"
-      x-oagis-release-date: "2024-05-10"
-      type: "object"
-      additionalProperties: false
-      properties:
-        status:
-          type: "object"
-          additionalProperties: false
-          properties:
-            code:
-              example: "FULL"
-              type: "string"
-              format: "normalizedString"
-            reasonCode:
-              example: ""
-              type: "string"
-              format: "normalizedString"
-            reason:
-              example: ""
-              type: "string"
-            effectiveTimePeriod:
-              type: "object"
-              additionalProperties: false
-              properties:
-                typeCode:
-                  example: "Epoch"
-                  type: "string"
-                  format: "token"
-                endDateTime:
-                  example: ""
-                  type: "string"
-                  format: "date-time"
-        availableVolumeMeasure:
-          type: "object"
-          required:
-          - "content"
-          additionalProperties: false
-          properties:
-            content:
-              type: "number"
-              example: "800"
-            unitCode:
-              example: "CF"
-              type: "string"
-              format: "token"
-        availableWeightMeasure:
-          type: "object"
-          required:
-          - "content"
-          additionalProperties: false
-          properties:
-            content:
-              type: "number"
-              example: "48000"
-            unitCode:
-              example: "LB"
-              type: "string"
-              format: "token"
-        endMaterialVolumeMeasure:
-          type: "object"
-          required:
-          - "content"
-          additionalProperties: false
-          properties:
-            content:
-              type: "number"
-              example: null
-            unitCode:
-              example: "CF"
-              type: "string"
-              format: "token"
-        endMaterialWeightMeasure:
-          type: "object"
-          required:
-          - "content"
-          additionalProperties: false
-          properties:
-            content:
-              type: "number"
-              example: null
-            unitCode:
-              example: "LB"
-              type: "string"
-              format: "token"
     criticalTrackingEventRequestCreate:
       x-oagis-bie-guid: "4c57aa340d2b491da3021e3682dc3eb5"
       x-oagis-bie-date-time: "2024-06-05T02:37:20+0000"
@@ -3169,6 +2611,580 @@ components:
                     example: "planting"
                     type: "string"
                     format: "normalizedString"
+    statusList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/status"
+    deviceResourceList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/deviceResource"
+    operationRequest:
+      x-oagis-bie-guid: "0cfa3814ec7e4acfa3effa8ebbb3768d"
+      x-oagis-bie-date-time: "2024-06-03T03:13:26+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Operation"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/938"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        description:
+          example: "Fill the Planter bins on the planter "
+          type: "string"
+        typeCode:
+          example: "Fill"
+          type: "string"
+          format: "token"
+        status:
+          $ref: "#/components/schemas/statusList"
+        operationTimePeriod:
+          type: "object"
+          additionalProperties: false
+          properties:
+            startDateTime:
+              example: "2024-04-15T09:11:05-05:00"
+              type: "string"
+              format: "date-time"
+            endDateTime:
+              example: ""
+              type: "string"
+              format: "date-time"
+        deviceResource:
+          $ref: "#/components/schemas/deviceResourceList"
+    operationResponse:
+      x-oagis-bie-guid: "3381309395514f66b08a6455240239c3"
+      x-oagis-bie-date-time: "2024-06-03T03:07:02+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Operation"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/937"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        id:
+          example: "1"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "0f122b39-c36c-4f27-bb86-a82bd3f4605b"
+          type: "string"
+          format: "normalizedString"
+        description:
+          example: "Fill the Planter bins on the planter "
+          type: "string"
+        typeCode:
+          example: "Fill"
+          type: "string"
+          format: "token"
+        status:
+          $ref: "#/components/schemas/statusList"
+        operationTimePeriod:
+          type: "object"
+          additionalProperties: false
+          properties:
+            startDateTime:
+              example: "2024-04-15T09:11:05-05:00"
+              type: "string"
+              format: "date-time"
+            endDateTime:
+              example: ""
+              type: "string"
+              format: "date-time"
+        deviceResource:
+          $ref: "#/components/schemas/deviceResourceList"
+    operatorParty:
+      x-oagis-bie-guid: "cb8c2842624741608d4add33f9a30caf"
+      x-oagis-bie-date-time: "2023-09-13T19:41:14+0000"
+      x-oagis-bie-version: "V2"
+      x-oagis-bie-den: "Operator Party"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/820"
+      x-oagis-release: "10.9.3"
+      x-oagis-release-date: "2023-09-11"
+      type: "object"
+      additionalProperties: false
+      properties:
+        typeCode:
+          example: "PlanterOperator"
+          type: "string"
+          format: "token"
+        id:
+          example: "123232132"
+          type: "string"
+          format: "normalizedString"
+        name:
+          example: "Billy Bob"
+          type: "string"
+    containerResponse:
+      x-oagis-bie-guid: "2d592835eab94477b47335b077666bba"
+      x-oagis-bie-date-time: "2024-06-03T18:14:29+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Container"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/940"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        typeCode:
+          example: "Planter_Box"
+          type: "string"
+          format: "token"
+        id:
+          example: "1"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          example: "Data Platform"
+          type: "string"
+          format: "normalizedString"
+        partyId:
+          example: "RetailerA"
+          type: "string"
+          format: "normalizedString"
+        relatedId:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              id:
+                oneOf:
+                - nullable: true
+                - example: ""
+                  type: "string"
+                  format: "normalizedString"
+              uuid:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              sourceId:
+                oneOf:
+                - nullable: true
+                - example: ""
+                  type: "string"
+                  format: "normalizedString"
+              partyId:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+        description:
+          example: "Planter Bin 1 on Kinze"
+          type: "string"
+        containerGroupId:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "string"
+              format: "normalizedString"
+              example: "1"
+            typeCode:
+              example: "Section"
+              type: "string"
+              format: "token"
+        capacity:
+          type: "object"
+          additionalProperties: false
+          properties:
+            typeCode:
+              example: "Specified"
+              type: "string"
+              format: "token"
+            maximumVolumeMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "950"
+                unitCode:
+                  example: "BU"
+                  type: "string"
+                  format: "token"
+            maximumWeightMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "53200"
+                unitCode:
+                  example: "LBS"
+                  type: "string"
+                  format: "token"
+        deviceResource:
+          type: "object"
+          additionalProperties: false
+          properties:
+            uuid:
+              example: "570612be-db3b-4a76-944c-c11f3fb5bed8"
+              type: "string"
+              format: "normalizedString"
+            deviceItem:
+              type: "array"
+              items:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  typeCode:
+                    example: "Planter"
+                    type: "string"
+                    format: "token"
+                  productName:
+                    example: "5670"
+                    type: "string"
+                  brandName:
+                    example: "Kinze"
+                    type: "string"
+        containerState:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              typeCode:
+                example: "Capacity"
+                type: "string"
+                format: "token"
+              status:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  code:
+                    example: "EMPTY"
+                    type: "string"
+                    format: "normalizedString"
+                  reasonCode:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  reason:
+                    example: ""
+                    type: "string"
+                  effectiveTimePeriod:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      typeCode:
+                        example: "Epoch"
+                        type: "string"
+                        format: "token"
+                      startDateTime:
+                        example: ""
+                        type: "string"
+                      endDateTime:
+                        example: ""
+                        type: "string"
+                        format: "date-time"
+              currentMaximumCapacity:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  reasonCode:
+                    example: "COMPACTION"
+                    type: "string"
+                    format: "normalizedString"
+                  reason:
+                    example: "Jeremy said so - higher moisture content."
+                    type: "string"
+                  effectiveTimePeriod:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      startDateTime:
+                        example: "2023-07-23 11:34:01-05:00"
+                        type: "string"
+                        format: "date-time"
+                      endDateTime:
+                        example: ""
+                        type: "string"
+                        format: "date-time"
+                  statusIndicator:
+                    example: "Active"
+                    type: "string"
+                  currentDateTime:
+                    example: "2023-08-01 11:34:01-05:00"
+                    type: "string"
+                    format: "date-time"
+                  maximumVolumeMeasure:
+                    type: "object"
+                    required:
+                    - "content"
+                    additionalProperties: false
+                    properties:
+                      content:
+                        type: "number"
+                        example: "800"
+                      unitCode:
+                        example: "BU"
+                        type: "string"
+                        format: "token"
+                  maximumWeightMeasure:
+                    type: "object"
+                    required:
+                    - "content"
+                    additionalProperties: false
+                    properties:
+                      content:
+                        type: "number"
+                        example: "48000"
+                      unitCode:
+                        example: "LBS"
+                        type: "string"
+                        format: "token"
+                  declaringParty:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: "972a57dc-c679-4c73-9c2c-f548a77a5f4b"
+                        type: "string"
+                        format: "normalizedString"
+                      name:
+                        example: "Jeremy"
+                        type: "string"
+              availableVolumeMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "800"
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
+              availableWeightMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "48000"
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+              startMaterialVolumeMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "0"
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
+              startMaterialWeightMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: "0"
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+              endMaterialVolumeMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: null
+                  unitCode:
+                    example: "BSH"
+                    type: "string"
+                    format: "token"
+              endMaterialWeightMeasure:
+                type: "object"
+                required:
+                - "content"
+                additionalProperties: false
+                properties:
+                  content:
+                    type: "number"
+                    example: null
+                  unitCode:
+                    example: "LB"
+                    type: "string"
+                    format: "token"
+    containerList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/containerListEntry"
+    containerListEntry:
+      x-oagis-bie-guid: "1f8d66a2bf4a4f43ba5035147b308f9a"
+      x-oagis-bie-date-time: "2024-06-05T01:26:53+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Container"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/941"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        typeCode:
+          example: "planter-bin"
+          type: "string"
+          format: "token"
+        id:
+          example: "1"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
+          type: "string"
+          format: "normalizedString"
+        sourceId:
+          example: "Data Platform"
+          type: "string"
+          format: "normalizedString"
+        partyId:
+          example: "RetailerA"
+          type: "string"
+          format: "normalizedString"
+        description:
+          example: "Planter Bin 1 on Kinze"
+          type: "string"
+        containerGroupId:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "string"
+              format: "normalizedString"
+              example: "1"
+            typeCode:
+              example: "Section"
+              type: "string"
+              format: "token"
+        deviceResource:
+          type: "array"
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              uuid:
+                example: "570612be-db3b-4a76-944c-c11f3fb5bed8"
+                type: "string"
+                format: "normalizedString"
+              deviceItem:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  typeCode:
+                    example: "Planter"
+                    type: "string"
+                    format: "token"
+                  productName:
+                    example: "5670"
+                    type: "string"
+                  brandName:
+                    example: "Kinze"
+                    type: "string"
+        containerState:
+          type: "object"
+          additionalProperties: false
+          properties:
+            typeCode:
+              example: "Capacity"
+              type: "string"
+              format: "token"
+            status:
+              type: "object"
+              additionalProperties: false
+              properties:
+                code:
+                  example: "EMPTY"
+                  type: "string"
+                  format: "normalizedString"
+                reasonCode:
+                  example: ""
+                  type: "string"
+                  format: "normalizedString"
+                reason:
+                  example: ""
+                  type: "string"
+            availableVolumeMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "800"
+                unitCode:
+                  example: "BSH"
+                  type: "string"
+                  format: "token"
+            availableWeightMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "48000"
+                unitCode:
+                  example: "LB"
+                  type: "string"
+                  format: "token"
+            startMaterialVolumeMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "0"
+                unitCode:
+                  example: "BSH"
+                  type: "string"
+                  format: "token"
+            startMaterialWeightMeasure:
+              type: "object"
+              required:
+              - "content"
+              additionalProperties: false
+              properties:
+                content:
+                  type: "number"
+                  example: "0"
+                unitCode:
+                  example: "LB"
+                  type: "string"
+                  format: "token"
     geospatial:
       x-oagis-bie-guid: "8ce22444fbf445c1bac919359dab6eee"
       x-oagis-bie-date-time: "2023-11-05T13:37:17+0000"
@@ -3308,112 +3324,6 @@ components:
           example: "https://api.oemplatform.com/field/e3a8aec7-f2a2-4cb3-a5c7-02358c588002"
           type: "string"
           format: "normalizedString"
-    statusList:
-      type: "array"
-      items:
-        $ref: "#/components/schemas/status"
-    deviceResourceList:
-      type: "array"
-      items:
-        $ref: "#/components/schemas/deviceResource"
-    operationRequest:
-      x-oagis-bie-guid: "0cfa3814ec7e4acfa3effa8ebbb3768d"
-      x-oagis-bie-date-time: "2024-06-03T03:13:26+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Operation"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/938"
-      x-oagis-release: "10.11"
-      x-oagis-release-date: "2024-05-10"
-      type: "object"
-      additionalProperties: false
-      properties:
-        description:
-          example: "Fill the Planter bins on the planter "
-          type: "string"
-        typeCode:
-          example: "Fill"
-          type: "string"
-          format: "token"
-        status:
-          $ref: "#/components/schemas/statusList"
-        operationTimePeriod:
-          type: "object"
-          additionalProperties: false
-          properties:
-            startDateTime:
-              example: "2024-04-15T09:11:05-05:00"
-              type: "string"
-              format: "date-time"
-            endDateTime:
-              example: ""
-              type: "string"
-              format: "date-time"
-        deviceResource:
-          $ref: "#/components/schemas/deviceResourceList"
-    operationResponse:
-      x-oagis-bie-guid: "3381309395514f66b08a6455240239c3"
-      x-oagis-bie-date-time: "2024-06-03T03:07:02+0000"
-      x-oagis-bie-version: "V1"
-      x-oagis-bie-den: "Operation"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/937"
-      x-oagis-release: "10.11"
-      x-oagis-release-date: "2024-05-10"
-      type: "object"
-      additionalProperties: false
-      properties:
-        id:
-          example: "1"
-          type: "string"
-          format: "normalizedString"
-        uuid:
-          example: "0f122b39-c36c-4f27-bb86-a82bd3f4605b"
-          type: "string"
-          format: "normalizedString"
-        description:
-          example: "Fill the Planter bins on the planter "
-          type: "string"
-        typeCode:
-          example: "Fill"
-          type: "string"
-          format: "token"
-        status:
-          $ref: "#/components/schemas/statusList"
-        operationTimePeriod:
-          type: "object"
-          additionalProperties: false
-          properties:
-            startDateTime:
-              example: "2024-04-15T09:11:05-05:00"
-              type: "string"
-              format: "date-time"
-            endDateTime:
-              example: ""
-              type: "string"
-              format: "date-time"
-        deviceResource:
-          $ref: "#/components/schemas/deviceResourceList"
-    operatorParty:
-      x-oagis-bie-guid: "cb8c2842624741608d4add33f9a30caf"
-      x-oagis-bie-date-time: "2023-09-13T19:41:14+0000"
-      x-oagis-bie-version: "V2"
-      x-oagis-bie-den: "Operator Party"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/820"
-      x-oagis-release: "10.9.3"
-      x-oagis-release-date: "2023-09-11"
-      type: "object"
-      additionalProperties: false
-      properties:
-        typeCode:
-          example: "PlanterOperator"
-          type: "string"
-          format: "token"
-        id:
-          example: "123232132"
-          type: "string"
-          format: "normalizedString"
-        name:
-          example: "Billy Bob"
-          type: "string"
     traceableResourceUnitRequestCreate:
       x-oagis-bie-guid: "b24dda79859f4a5a9a7d9420c3dd0a5a"
       x-oagis-bie-date-time: "2024-06-05T03:00:46+0000"
@@ -3990,6 +3900,96 @@ components:
                   format: "date-time"
         container:
           $ref: "#/components/schemas/container"
+    containerState:
+      x-oagis-bie-guid: "d25e668f112d468c8d1b4796e2926263"
+      x-oagis-bie-date-time: "2024-06-03T16:16:42+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Container State"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/939"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        status:
+          type: "object"
+          additionalProperties: false
+          properties:
+            code:
+              example: "FULL"
+              type: "string"
+              format: "normalizedString"
+            reasonCode:
+              example: ""
+              type: "string"
+              format: "normalizedString"
+            reason:
+              example: ""
+              type: "string"
+            effectiveTimePeriod:
+              type: "object"
+              additionalProperties: false
+              properties:
+                typeCode:
+                  example: "Epoch"
+                  type: "string"
+                  format: "token"
+                endDateTime:
+                  example: ""
+                  type: "string"
+                  format: "date-time"
+        availableVolumeMeasure:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "number"
+              example: "800"
+            unitCode:
+              example: "CF"
+              type: "string"
+              format: "token"
+        availableWeightMeasure:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "number"
+              example: "48000"
+            unitCode:
+              example: "LB"
+              type: "string"
+              format: "token"
+        endMaterialVolumeMeasure:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "number"
+              example: null
+            unitCode:
+              example: "CF"
+              type: "string"
+              format: "token"
+        endMaterialWeightMeasure:
+          type: "object"
+          required:
+          - "content"
+          additionalProperties: false
+          properties:
+            content:
+              type: "number"
+              example: null
+            unitCode:
+              example: "LB"
+              type: "string"
+              format: "token"
     traceableResourceUnitRequestUpdate:
       x-oagis-bie-guid: "aa3e2eaca06a4de19da7a2f122d320b1"
       x-oagis-bie-date-time: "2024-06-05T03:27:48+0000"
