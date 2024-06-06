@@ -1,4 +1,4 @@
-title AgGateway Traceability - Planting Operations
+title AgGateway Traceability - Planting Process Category 
 
 actor Farmer
 participant MobileApp
