@@ -49,7 +49,7 @@ DataPlatform --> MobileApp: ^container-list
 
 
 
-loop until this field is complete
+loop (re)fill planter bin and plant until this field is complete
 
 == fill and refill operation, off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB  ==
 Farmer->MobileApp: Start Fill Operation
@@ -79,7 +79,7 @@ Farmer ->MobileApp: identify targetContainer
 Farmer ->MobileApp:record start weight or volume pct
 Farmer ->planter Box: fill targetContainer
 
-MobileApp -> MobileLocalAPI:POST  /traceable-resource-unit-list
+MobileApp -> MobileLocalAPI:POST  /traceable-resource-unit
 note left of MobileApp:target TRU
 MobileLocalAPI --> MobileApp:^truUUID, containerUUID, roleCode=target
 end
@@ -87,11 +87,11 @@ end
 MobileApp ->MobileLocalAPI: PATCH /operation/{operationUUID}/endDateTime&status.code=Complete
 MobileLocalAPI --> MobileApp: ^HTTP 200 operationUUID, status=success
 
-MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
-MobileLocalAPI --> MobileApp: ^HTTP 200 cteUUID, status=success
+MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}/traceable-resource-unit/{truUUID}
+MobileLocalAPI --> MobileApp: ^HTTP cteUUID status=success
 
-note left of MobileLocalAPI: CTE transfer to planter status=complete with end date time
-note left of MobileLocalAPI:CTE includes one TRU per target container with item instance (qty/lot)\nsourceTRU has remaining item volume weight
+note left of MobileApp:CTE transfer to planter status=complete with end date time \nTRU sources are now inactive\nif a source TRU has remaining item volume weight, \nit should still be active, e.g., affected by seed rate
+note left of MobileApp:CTE now includes one TRU item instance (qty/lot) \nper target planter bin container
 
 
 ==operation planting; off-line MobileApp <-> MobileLocalAPI <-> SQLiteDB ==
@@ -123,11 +123,21 @@ planter -> planter: record point on arable field
 planter ->Tractor Display: log point
 end
 
-Tractor Display --> MobileApp: geometry of cropZone (mult-polygon)
+Tractor Display --> MobileApp: geometry of cropZone (multi-polygon)
 MobileApp ->MobileLocalAPI: PATCH /operation/{operationUUID}/endDateTime&status.code=Complete
 MobileLocalAPI --> MobileApp: ^HTTP 200 operationUUID, status=success
-
-MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}
-note left of MobileApp:cte includes target TRU. \ngeometry=>cropZone with roleCode=target
-MobileLocalAPI --> MobileApp: ^HTTP 200 cteUUID, status=success
+MobileApp ->MobileLocalAPI: PATCH /traceability/traceable-resource-unit/{id}/V1/container-state
+note left of MobileApp:Ensures the source TRU container-state is logged \nto understand the available capacity of a specific planter bin \nThe refill may not necessary be when the container is empty, \nbut when it is convenient to refill, e.g., at the edge of the field vs the middle of the field 
+MobileLocalAPI --> MobileApp: ^HTTP cteUUID status=success
+MobileApp ->MobileLocalAPI: PATCH /critical-tracking-event/{cteUUID}/traceable-resource-unit/{truUUID}?roleCode=target
+MobileLocalAPI --> MobileApp: ^HTTP cteUUID status=success
+note left of MobileApp:cte includes target TRU. \ncte also sets source TRU status to inactive\ngeometry=>cropZone with roleCode=target
+end
+MobileApp ->MobileLocalAPI: POST /critical-tracking-event/{cteUUID}/traceable-resource-unit/
+note left of MobileApp:cte now includes a target TRU of the \nentire field with multiple item instance(s). \ngeometry=> field with roleCode=target; \nthis can be a stitch of the geospatial cropZone boundaries \n
+MobileLocalAPI --> MobileApp: ^HTTP cteUUID status=success
+opt for offline mode, the CTEs can be uploaded when reconnected
+MobileApp -> MobileLocalAPI: GET /critical-tracking-event-list? fieldId=$
+MobileApp ->DataPlatform: POST /critical-tracking-event/{cteUUID}/traceable-resource-unit/
+DataPlatform --> MobileApp: ^HTTP cteUUID status=success
 end
