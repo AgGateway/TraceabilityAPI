@@ -162,14 +162,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/operationRequest"
+              $ref: "#/components/schemas/operationRequestCreate"
       responses:
         "200":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/operationResponse"
+                $ref: "#/components/schemas/operationResponseCreate"
+    patch:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "operationWrite"
+      tags:
+      - "Field Operations"
+      operationId: "updateOperation"
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/operationRequestUpdate"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/operationResponseUpdate"
   /traceability/V1/operator-party:
     summary: ""
     description: ""
@@ -411,6 +434,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/traceableResourceUnitResponseUpdate"
+  /traceability/V1/traceable-resource-unit-list:
+    summary: ""
+    description: ""
+    get:
+      summary: ""
+      description: ""
+      security:
+      - OAuth2:
+        - "traceableResourceUnitRead"
+      tags:
+      - "Traceable Resource Unit"
+      operationId: "queryTraceableResourceUnitList"
+      parameters:
+      - name: "sinceLastDateTime"
+        in: "query"
+        description: "Returns resources that have been updated since the last time\
+          \ the endpoint has been called"
+        required: false
+        schema:
+          type: "string"
+          format: "date-time"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/traceableResourceUnitList"
   /traceability/traceable-resource-unit/{id}/V1/container-state:
     summary: ""
     description: ""
@@ -2619,7 +2670,7 @@ components:
       type: "array"
       items:
         $ref: "#/components/schemas/deviceResource"
-    operationRequest:
+    operationRequestCreate:
       x-oagis-bie-guid: "0cfa3814ec7e4acfa3effa8ebbb3768d"
       x-oagis-bie-date-time: "2024-06-03T03:13:26+0000"
       x-oagis-bie-version: "V1"
@@ -2653,7 +2704,26 @@ components:
               format: "date-time"
         deviceResource:
           $ref: "#/components/schemas/deviceResourceList"
-    operationResponse:
+        rateMeasure:
+          type: "array"
+          items:
+            type: "object"
+            required:
+            - "content"
+            additionalProperties: false
+            properties:
+              content:
+                type: "number"
+                example: "38,000"
+              typeCode:
+                example: "AppliedCountPerAreaTarget"
+                type: "string"
+                format: "token"
+              unitCode:
+                example: "count1ha-1"
+                type: "string"
+                format: "token"
+    operationResponseCreate:
       x-oagis-bie-guid: "3381309395514f66b08a6455240239c3"
       x-oagis-bie-date-time: "2024-06-03T03:07:02+0000"
       x-oagis-bie-version: "V1"
@@ -2689,12 +2759,27 @@ components:
               example: "2024-04-15T09:11:05-05:00"
               type: "string"
               format: "date-time"
-            endDateTime:
-              example: ""
-              type: "string"
-              format: "date-time"
         deviceResource:
           $ref: "#/components/schemas/deviceResourceList"
+        rateMeasure:
+          type: "array"
+          items:
+            type: "object"
+            required:
+            - "content"
+            additionalProperties: false
+            properties:
+              content:
+                type: "number"
+                example: "38000"
+              typeCode:
+                example: "AppliedCountPerAreaTarget"
+                type: "string"
+                format: "token"
+              unitCode:
+                example: "count1ha-1"
+                type: "string"
+                format: "token"
     operatorParty:
       x-oagis-bie-guid: "cb8c2842624741608d4add33f9a30caf"
       x-oagis-bie-date-time: "2023-09-13T19:41:14+0000"
@@ -3186,13 +3271,13 @@ components:
                   type: "string"
                   format: "token"
     geospatial:
-      x-oagis-bie-guid: "8ce22444fbf445c1bac919359dab6eee"
-      x-oagis-bie-date-time: "2023-11-05T13:37:17+0000"
+      x-oagis-bie-guid: "52d7a5f91d7849ba96ce01a536d84d98"
+      x-oagis-bie-date-time: "2024-06-06T16:40:30+0000"
       x-oagis-bie-version: "V1"
       x-oagis-bie-den: "Geospatial"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/865"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/953"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
       type: "object"
       additionalProperties: false
       properties:
@@ -3280,13 +3365,13 @@ components:
       items:
         $ref: "#/components/schemas/geospatialListEntry"
     geospatialListEntry:
-      x-oagis-bie-guid: "426b21e67c7e4b35ab47e27fce89e44b"
-      x-oagis-bie-date-time: "2023-11-05T13:33:57+0000"
+      x-oagis-bie-guid: "50a746905a2445f6ae7ef54052b085a1"
+      x-oagis-bie-date-time: "2024-06-06T16:38:34+0000"
       x-oagis-bie-version: "V1"
       x-oagis-bie-den: "Geospatial"
-      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/864"
-      x-oagis-release: "10.10.1"
-      x-oagis-release-date: "2023-11-01"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/952"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
       type: "object"
       additionalProperties: false
       properties:
@@ -3324,6 +3409,111 @@ components:
           example: "https://api.oemplatform.com/field/e3a8aec7-f2a2-4cb3-a5c7-02358c588002"
           type: "string"
           format: "normalizedString"
+    operationRequestUpdate:
+      x-oagis-bie-guid: "7bfe8680848d40459c5909551ab9491b"
+      x-oagis-bie-date-time: "2024-06-06T15:45:13+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Operation"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/949"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        id:
+          example: "1"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "0f122b39-c36c-4f27-bb86-a82bd3f4605b"
+          type: "string"
+          format: "normalizedString"
+        status:
+          $ref: "#/components/schemas/statusList"
+        operationTimePeriod:
+          type: "object"
+          additionalProperties: false
+          properties:
+            endDateTime:
+              example: "2024-04-15T10:11:05-05:00"
+              type: "string"
+              format: "date-time"
+        rateMeasure:
+          type: "array"
+          items:
+            type: "object"
+            required:
+            - "content"
+            additionalProperties: false
+            properties:
+              content:
+                type: "number"
+                example: "38152.25"
+              typeCode:
+                example: "AppliedCountPerAreaActual"
+                type: "string"
+                format: "token"
+              unitCode:
+                example: ""
+                type: "string"
+                format: "token"
+    operationResponseUpdate:
+      x-oagis-bie-guid: "0b749b3f318e4aa09b7264cf0869470d"
+      x-oagis-bie-date-time: "2024-06-06T16:20:07+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Operation"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/950"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      additionalProperties: false
+      properties:
+        id:
+          example: "1"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "0f122b39-c36c-4f27-bb86-a82bd3f4605b"
+          type: "string"
+          format: "normalizedString"
+        description:
+          example: "Fill the Planter bins on the planter "
+          type: "string"
+        status:
+          $ref: "#/components/schemas/statusList"
+        operationTimePeriod:
+          type: "object"
+          additionalProperties: false
+          properties:
+            startDateTime:
+              example: "2024-04-15T09:11:05-05:00"
+              type: "string"
+              format: "date-time"
+            endDateTime:
+              example: "2024-04-15T10:11:05-05:00"
+              type: "string"
+              format: "date-time"
+        deviceResource:
+          $ref: "#/components/schemas/deviceResourceList"
+        rateMeasure:
+          type: "array"
+          items:
+            type: "object"
+            required:
+            - "content"
+            additionalProperties: false
+            properties:
+              content:
+                type: "number"
+                example: "38152.25"
+              typeCode:
+                example: "AppliedCountPerAreaActual"
+                type: "string"
+                format: "token"
+              unitCode:
+                example: ""
+                type: "string"
+                format: "token"
     traceableResourceUnitRequestCreate:
       x-oagis-bie-guid: "b24dda79859f4a5a9a7d9420c3dd0a5a"
       x-oagis-bie-date-time: "2024-06-05T03:00:46+0000"
@@ -3900,6 +4090,137 @@ components:
                   format: "date-time"
         container:
           $ref: "#/components/schemas/container"
+    traceableResourceUnitList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/traceableResourceUnit"
+    traceableResourceUnit:
+      x-oagis-bie-guid: "c0cbbf821c0a47a2bc1a1b6b5ffa2e95"
+      x-oagis-bie-date-time: "2024-06-06T16:32:34+0000"
+      x-oagis-bie-version: "V1"
+      x-oagis-bie-den: "Traceable Resource Unit"
+      x-oagis-bie-uri: "https://oagiscore.net/profile_bie/951"
+      x-oagis-release: "10.11"
+      x-oagis-release-date: "2024-05-10"
+      type: "object"
+      required:
+      - "itemInstance"
+      - "status"
+      - "container"
+      additionalProperties: false
+      properties:
+        typeCode:
+          example: "Source"
+          type: "string"
+          format: "token"
+        id:
+          example: "1"
+          type: "string"
+          format: "normalizedString"
+        uuid:
+          example: "de79409d-2477-48ae-8db7-aea73f2da29c"
+          type: "string"
+          format: "normalizedString"
+        cteId:
+          type: "array"
+          items:
+            example: "e58725ec-7698-453f-9c98-282497efd46d"
+            type: "string"
+            format: "normalizedString"
+        itemInstance:
+          type: "array"
+          minItems: 1
+          items:
+            type: "object"
+            additionalProperties: false
+            properties:
+              uuid:
+                example: ""
+                type: "string"
+                format: "normalizedString"
+              lot:
+                type: "array"
+                items:
+                  type: "object"
+                  additionalProperties: false
+                  properties:
+                    typeCode:
+                      example: "Lot"
+                      type: "string"
+                      format: "token"
+                    id:
+                      example: ""
+                      type: "string"
+                      format: "normalizedString"
+              item:
+                type: "object"
+                additionalProperties: false
+                properties:
+                  typeCode:
+                    example: ""
+                    type: "string"
+                    format: "token"
+                  manufacturerItemIdentification:
+                    type: "object"
+                    additionalProperties: false
+                    properties:
+                      id:
+                        example: ""
+                        type: "string"
+                        format: "normalizedString"
+                  gtinid:
+                    example: ""
+                    type: "string"
+                    format: "normalizedString"
+                  brandName:
+                    example: "Croplan"
+                    type: "string"
+                  varietyName:
+                    example: ""
+                    type: "string"
+        status:
+          type: "object"
+          additionalProperties: false
+          properties:
+            code:
+              example: "Active"
+              type: "string"
+              format: "normalizedString"
+            effectiveTimePeriod:
+              type: "object"
+              additionalProperties: false
+              properties:
+                year:
+                  example: "2024"
+                  type: "string"
+                  format: "date"
+                startDateTime:
+                  example: "2023-08-09"
+                  type: "string"
+                  format: "date-time"
+                endDateTime:
+                  example: "2023-08-10"
+                  type: "string"
+                  format: "date-time"
+        container:
+          type: "object"
+          additionalProperties: false
+          properties:
+            typeCode:
+              example: "Planter_Box"
+              type: "string"
+              format: "token"
+            id:
+              example: "1"
+              type: "string"
+              format: "normalizedString"
+            uuid:
+              example: "2b4847dd-a745-43dd-b1dd-0af3c6ba9de2"
+              type: "string"
+              format: "normalizedString"
+            description:
+              example: "Kinze 940"
+              type: "string"
     containerState:
       x-oagis-bie-guid: "d25e668f112d468c8d1b4796e2926263"
       x-oagis-bie-date-time: "2024-06-03T16:16:42+0000"
