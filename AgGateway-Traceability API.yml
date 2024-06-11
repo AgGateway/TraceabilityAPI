@@ -17,7 +17,7 @@ paths:
     summary: ''
     description: ''
     post:
-      summary: ''
+      summary: 'Provides ability to create a new Critical Tracking Event, that the event has started'
       description: ''
       security:
         - OAuth2:
@@ -42,7 +42,7 @@ paths:
     summary: ''
     description: ''
     post:
-      summary: ''
+      summary: 'Provides ability to POST completed CTEs for an entire field when re-connected to a network'
       description: ''
       security:
         - OAuth2:
@@ -64,7 +64,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/criticalTrackingEventList'
     get:
-      summary: ''
+      summary: 'Provides the ability to retrieve related CTEs based on the query parameters provided.'
       description: ''
       security:
         - OAuth2:
@@ -129,7 +129,7 @@ paths:
     summary: ''
     description: ''
     get:
-      summary: ''
+      summary: 'Provides the ability to retrieve the detail of a specific critical tracking event.'
       description: ''
       security:
         - OAuth2:
@@ -152,7 +152,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/criticalTrackingEventListEntry'
     patch:
-      summary: ''
+      summary: 'Provides the ability to update a CTE, typically related to its completed event.'
       description: ''
       security:
         - OAuth2:
@@ -184,7 +184,7 @@ paths:
     summary: ''
     description: ''
     post:
-      summary: ''
+      summary: 'Creates a new Operation, typically when the operation has started.'
       description: ''
       security:
         - OAuth2:
@@ -206,7 +206,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/operationResponseCreate'
     patch:
-      summary: ''
+      summary: 'Provides the ability to update an operation, typically related to its completion.'
       description: ''
       security:
         - OAuth2:
@@ -232,7 +232,7 @@ paths:
     summary: ''
     description: ''
     post:
-      summary: ''
+      summary: 'Identifies the operator that will be performing the operation.'
       description: ''
       security:
         - OAuth2:
@@ -257,7 +257,7 @@ paths:
     summary: ''
     description: ''
     get:
-      summary: ''
+      summary: 'Retrieves the detail of a specific container by its identifier.'
       description: ''
       security:
         - OAuth2:
