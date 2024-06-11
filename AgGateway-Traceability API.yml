@@ -283,7 +283,7 @@ paths:
     summary: ''
     description: ''
     get:
-      summary: ''
+      summary: 'Allows the retrieval a list of containers that are available for a device resource or shipment.'
       description: ''
       security:
         - OAuth2:
@@ -333,7 +333,7 @@ paths:
     summary: ''
     description: ''
     get:
-      summary: ''
+      summary: 'Retrieves a list of device resources (instances) that are available for the operations to be performed in the field.'
       description: ''
       security:
         - OAuth2:
@@ -359,7 +359,7 @@ paths:
     summary: ''
     description: ''
     get:
-      summary: ''
+      summary: 'allows the retrieval the detail of a specific field'
       description: ''
       security:
         - OAuth2:
@@ -385,7 +385,7 @@ paths:
     summary: ''
     description: ''
     get:
-      summary: ''
+      summary: 'Allows the retrieval of the list of arable fields that a farmer can plant on.'
       description: ''
       security:
         - OAuth2:
@@ -411,7 +411,7 @@ paths:
     summary: ''
     description: ''
     post:
-      summary: ''
+      summary: 'Allows the creation of a traceable resource unit, marking the quantity of material as active.'
       description: ''
       security:
         - OAuth2:
@@ -436,7 +436,7 @@ paths:
     summary: ''
     description: ''
     get:
-      summary: ''
+      summary: 'Allows retrieval of the detail of a specific TRU by its id.'
       description: ''
       security:
         - OAuth2:
@@ -459,7 +459,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/traceableResourceUnitResponseRead'
     patch:
-      summary: ''
+      summary: 'Allows the update of a traceable resource unit, typically to mark it as active or change its role from target to source.'
       description: ''
       security:
         - OAuth2:
@@ -491,7 +491,7 @@ paths:
     summary: ''
     description: ''
     get:
-      summary: ''
+      summary: 'Allows the retrieval of a list of related traceable resource units by available query parameters.'
       description: ''
       security:
         - OAuth2:
@@ -556,7 +556,7 @@ paths:
     summary: ''
     description: ''
     patch:
-      summary: ''
+      summary: 'Allows the update of the state of the container related to a traceable resource unit.'
       description: ''
       security:
         - OAuth2:
