@@ -3334,7 +3334,7 @@ components:
       additionalProperties: false
       properties:
         typeCode:
-          example: "Polygon"
+          example: "MULTIPOLYGON"
           type: "string"
           format: "token"
         id:
