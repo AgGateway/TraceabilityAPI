@@ -1,0 +1,586 @@
+openapi: 3.0.3
+info:
+  title: Traceability API
+  description: Provides the ability to create Critical Tracking Events (CTEs), Traceable Resource Units (TRUs) and relate container and their state to TRUs
+  termsOfService: Terms
+  contact:
+    name: AgGateway
+    url: https://traceability.aggateway.org
+    email: member.services@aggateway.org
+  license:
+    name: AgGateway API License
+    url: https://legal.aggateway.org/terms-of-service
+  version: V1
+  x-oagis-license: ''
+paths:
+  /traceability/V1/critical-tracking-event:
+    summary: ''
+    description: ''
+    post:
+      summary: 'Provides ability to create a new Critical Tracking Event, that the event has started'
+      description: ''
+      security:
+        - OAuth2:
+            - criticalTrackingEventWrite
+      tags:
+        - Critical Tracking Event
+      operationId: createCriticalTrackingEvent
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/criticalTrackingEventRequestCreate'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/criticalTrackingEventListEntry'
+  /traceability/V1/critical-tracking-event-list:
+    summary: ''
+    description: ''
+    post:
+      summary: 'Provides ability to POST completed CTEs for an entire field when re-connected to a network'
+      description: ''
+      security:
+        - OAuth2:
+            - criticalTrackingEventWrite
+      tags:
+        - Critical Tracking Event
+      operationId: createCriticalTrackingEventList
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/criticalTrackingEventList'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/criticalTrackingEventList'
+    get:
+      summary: 'Provides the ability to retrieve related CTEs based on the query parameters provided.'
+      description: ''
+      security:
+        - OAuth2:
+            - criticalTrackingEventRead
+      tags:
+        - Critical Tracking Event
+      operationId: queryCriticalTrackingEventList
+      parameters:
+        - name: sinceLastDateTime
+          in: query
+          description: Returns CTEs that have been updated since the last time the endpoint has been called
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: greaterThanDateTime
+          in: query
+          description: Returns CTEs that have been updated since a specified UTC timestamp
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: lessThanDateTime
+          in: query
+          description: Returns CTEs that have been updated up to a specified UTC timestamp
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: farmerUUID
+          in: query
+          description: UUID for the farmer
+          required: false
+          schema:
+            type: string
+        - name: fieldUUID
+          in: query
+          description: UUID for the farmer's field
+          required: false
+          schema:
+            type: string
+        - name: deviceUID
+          in: query
+          description: UUID for the device used, planter, tender, auger
+          required: false
+          schema:
+            type: string
+        - name: containerUUID
+          in: query
+          description: UUID for the container of interest
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/criticalTrackingEventList'
+  /traceability/V1/critical-tracking-event/{id}:
+    summary: ''
+    description: ''
+    get:
+      summary: 'Provides the ability to retrieve the detail of a specific critical tracking event.'
+      description: ''
+      security:
+        - OAuth2:
+            - criticalTrackingEventRead
+      tags:
+        - Critical Tracking Event
+      operationId: queryCriticalTrackingEvent
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/criticalTrackingEventListEntry'
+    patch:
+      summary: 'Provides the ability to update a CTE, typically related to its completed event.'
+      description: ''
+      security:
+        - OAuth2:
+            - criticalTrackingEventWrite
+      tags:
+        - Critical Tracking Event
+      operationId: updateCriticalTrackingEvent
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/criticalTrackingEventRequestUpdate'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/criticalTrackingEventListEntry'
+  /traceability/V1/operation:
+    summary: ''
+    description: ''
+    post:
+      summary: 'Creates a new Operation, typically when the operation has started.'
+      description: ''
+      security:
+        - OAuth2:
+            - operationWrite
+      tags:
+        - Field Operations
+      operationId: createOperation
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/operationRequestCreate'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/operationResponseCreate'
+    patch:
+      summary: 'Provides the ability to update an operation, typically related to its completion.'
+      description: ''
+      security:
+        - OAuth2:
+            - operationWrite
+      tags:
+        - Field Operations
+      operationId: updateOperation
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/operationRequestUpdate'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/operationResponseUpdate'
+  /traceability/V1/operator-party:
+    summary: ''
+    description: ''
+    post:
+      summary: 'Identifies the operator that will be performing the operation.'
+      description: ''
+      security:
+        - OAuth2:
+            - operatorPartyWrite
+      tags:
+        - Field Operations
+      operationId: createOperatorParty
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/operatorParty'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/operatorParty'
+  /traceability/V1/container/{id}:
+    summary: ''
+    description: ''
+    get:
+      summary: 'Retrieves the detail of a specific container by its identifier.'
+      description: ''
+      security:
+        - OAuth2:
+            - containerRead
+      tags:
+        - Field Operations
+      operationId: queryContainer
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/containerResponse'
+  /traceability/V1/container-list:
+    summary: ''
+    description: ''
+    get:
+      summary: 'Allows the retrieval a list of containers that are available for a device resource or shipment.'
+      description: ''
+      security:
+        - OAuth2:
+            - containerRead
+      tags:
+        - Field Operations
+      operationId: queryContainerList
+      parameters:
+        - name: farmerUUID
+          in: query
+          description: UUID for the farmer
+          required: false
+          schema:
+            type: string
+        - name: shipmentId
+          in: query
+          description: shipmentId generated by the retailer
+          required: false
+          schema:
+            type: string
+        - name: retailerId
+          in: query
+          description: identifier of the retailer, often a GLN
+          required: false
+          schema:
+            type: string
+        - name: fieldUUID
+          in: query
+          description: UUID for the farmer's field
+          required: false
+          schema:
+            type: string
+        - name: deviceUID
+          in: query
+          description: UUID for the device used, planter, tender, auger
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/containerList'
+  /traceability/V1/device-resource-list:
+    summary: ''
+    description: ''
+    get:
+      summary: 'Retrieves a list of device resources (instances) that are available for the operations to be performed in the field.'
+      description: ''
+      security:
+        - OAuth2:
+            - deviceResourceRead
+      tags:
+        - Field Operations
+      operationId: queryDeviceResourceList
+      parameters:
+        - name: farmerUUID
+          in: query
+          description: UUID for the farmer
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deviceResourceList'
+  /traceability/V1/field/{id}:
+    summary: ''
+    description: ''
+    get:
+      summary: 'allows the retrieval the detail of a specific field'
+      description: ''
+      security:
+        - OAuth2:
+            - geospatialRead
+      tags:
+        - Field Operations
+      operationId: queryField
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geospatial'
+  /traceability/V1/field-list:
+    summary: ''
+    description: ''
+    get:
+      summary: 'Allows the retrieval of the list of arable fields that a farmer can plant on.'
+      description: ''
+      security:
+        - OAuth2:
+            - geospatialRead
+      tags:
+        - Field Operations
+      operationId: queryFieldList
+      parameters:
+        - name: farmerUUID
+          in: query
+          description: UUID for the farmer
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geospatialList'
+  /traceability/V1/traceable-resource-unit:
+    summary: ''
+    description: ''
+    post:
+      summary: 'Allows the creation of a traceable resource unit, marking the quantity of material as active.'
+      description: ''
+      security:
+        - OAuth2:
+            - traceableResourceUnitWrite
+      tags:
+        - Traceable Resource Unit
+      operationId: createTraceableResourceUnit
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/traceableResourceUnitRequestCreate'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/traceableResourceUnitResponseCreate'
+  /traceability/V1/traceable-resource-unit/{id}:
+    summary: ''
+    description: ''
+    get:
+      summary: 'Allows retrieval of the detail of a specific TRU by its id.'
+      description: ''
+      security:
+        - OAuth2:
+            - traceableResourceUnitRead
+      tags:
+        - Traceable Resource Unit
+      operationId: queryTraceableResourceUnit
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/traceableResourceUnitResponseRead'
+    patch:
+      summary: 'Allows the update of a traceable resource unit, typically to mark it as active or change its role from target to source.'
+      description: ''
+      security:
+        - OAuth2:
+            - traceableResourceUnitWrite
+      tags:
+        - Traceable Resource Unit
+      operationId: updateTraceableResourceUnit
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/traceableResourceUnitRequestUpdate'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/traceableResourceUnitResponseUpdate'
+  /traceability/V1/traceable-resource-unit-list:
+    summary: ''
+    description: ''
+    get:
+      summary: 'Allows the retrieval of a list of related traceable resource units by available query parameters.'
+      description: ''
+      security:
+        - OAuth2:
+            - traceableResourceUnitRead
+      tags:
+        - Traceable Resource Unit
+      operationId: queryTraceableResourceUnitList
+      parameters:
+        - name: sinceLastDateTime
+          in: query
+          description: Returns resources that have been updated since the last time the endpoint has been called
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: greaterThanDateTime
+          in: query
+          description: Returns resources that have been updated since a specified UTC timestamp
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: lessThanDateTime
+          in: query
+          description: Returns resources that have been updated up to a specified UTC timestamp
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: farmerUUID
+          in: query
+          description: UUID for the farmer
+          required: false
+          schema:
+            type: string
+        - name: fieldUUID
+          in: query
+          description: UUID for the farmer's field
+          required: false
+          schema:
+            type: string
+        - name: deviceUID
+          in: query
+          description: UUID for the device used, planter, tender, auger
+          required: false
+          schema:
+            type: string
+        - name: containerUUID
+          in: query
+          description: UUID for the container of interest
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/traceableResourceUnitList'
+  /traceability/traceable-resource-unit/{id}/V1/container-state:
+    summary: ''
+    description: ''
+    patch:
+      summary: 'Allows the update of the state of the container related to a traceable resource unit.'
+      description: ''
+      security:
+        - OAuth2:
+            - containerStateWrite
+      tags:
+        - Traceable Resource Unit
+      operationId: updateContainerState
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/containerState'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/containerState'
